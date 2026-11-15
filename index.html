@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Visão">
+<meta name="theme-color" content="#0f0f10">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Visão</title>
+<style>
+:root{--bg:#121212;--card:#1e1e1e;--card2:#262626;--txt:#f2f2f2;--mut:#9a9a9a;--acc:#2fd39a;--pill:#113a2c;--pillt:#5ff0bd;--red:#ff6b6b;--line:#2b2b2b}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;overscroll-behavior:none}
+.app{max-width:480px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 0 calc(90px + env(safe-area-inset-bottom))}
+.screen{display:none;animation:f .2s}.screen.on{display:block}
+@keyframes f{from{opacity:0}to{opacity:1}}
+svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:6px 18px 14px}
+.circle{width:46px;height:46px;border-radius:50%;background:var(--card);display:grid;place-items:center;border:0;color:var(--txt);cursor:pointer}
+.tr{display:flex;align-items:center;gap:10px}
+.eyeb{background:none;border:0;color:var(--txt);padding:8px;cursor:pointer}
+.seg{display:flex;background:var(--card);border-radius:30px;padding:4px;gap:2px}
+.seg button{border:0;background:none;color:var(--mut);font-weight:700;font-size:13px;padding:9px 13px;border-radius:24px;cursor:pointer}
+.seg button.on{background:var(--card2);color:var(--txt)}
+
+.search{margin:0 18px;background:var(--card);border-radius:24px;padding:13px 16px;display:flex;align-items:center;gap:12px;color:var(--mut);font-size:17px;position:relative;cursor:pointer}
+.search:after{content:"";position:absolute;left:30%;right:30%;bottom:-1px;height:2px;background:radial-gradient(closest-side,var(--acc),transparent);filter:blur(.5px)}
+.spark{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7ff5cb,#1aa877);display:grid;place-items:center;color:#06281b;font-size:15px}
+
+.saldo{padding:34px 18px 6px}
+.saldo small{color:var(--mut);font-size:16px}
+.saldo .r{display:flex;justify-content:space-between;align-items:center;margin-top:8px;cursor:pointer}
+.saldo b{font-size:36px;font-weight:700;letter-spacing:-.5px}
+.dv{font-size:13px;color:var(--acc);margin-top:6px}.dv.neg{color:var(--red)}
+
+.pills{display:flex;gap:10px;padding:20px 18px;overflow-x:auto}
+.pills button{background:var(--pill);color:var(--pillt);border:0;border-radius:28px;padding:14px 20px;font-size:17px;font-weight:600;display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer}
+.pills svg{width:19px;height:19px}
+
+.hs{display:flex;gap:10px;overflow-x:auto;padding:6px 18px 4px;scrollbar-width:none}
+.hs::-webkit-scrollbar,.pills::-webkit-scrollbar{display:none}
+.tile{min-width:142px;height:142px;background:var(--card);border-radius:18px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;border:0;color:var(--txt);text-align:left;font-size:16px;cursor:pointer}
+.tile svg{width:28px;height:28px}
+
+.feed{margin:22px 18px 0;background:var(--card);border-radius:20px;padding:18px}
+.fh{display:flex;gap:12px;align-items:center}
+.fav{width:46px;height:46px;border-radius:50%;background:#2fd39a;display:grid;place-items:center;font-weight:800;color:#04241a}
+.fh b{font-size:17px}.fh small{display:block;color:var(--mut);font-size:14px}
+.fh .ago{margin-left:auto;color:var(--mut);font-size:14px;align-self:flex-start}
+.feed p{color:#c9c9c9;font-size:16px;line-height:1.5;margin:14px 0}
+.fa{display:flex;gap:26px;color:var(--txt);font-size:16px}.fa span{display:flex;align-items:center;gap:7px}
+.dots{display:flex;justify-content:center;gap:5px;margin-top:14px}.dots i{width:8px;height:4px;border-radius:3px;background:#444}.dots i.on{width:22px;background:#ddd}
+
+.banner{margin:22px 18px 0;border-radius:20px;padding:20px;background:linear-gradient(135deg,#0f3d2e,#1d7a58 60%,#2fd39a);position:relative;overflow:hidden;min-height:150px}
+.banner h4{font-size:24px;line-height:1.1;max-width:62%}
+.banner p{font-size:14px;opacity:.85;margin-top:8px;max-width:62%}
+.banner .big{position:absolute;right:16px;bottom:14px;font-size:64px}
+.banner .tag{display:inline-block;background:#04241a;color:var(--pillt);font-size:12px;font-weight:700;padding:5px 10px;border-radius:12px;margin-bottom:10px}
+
+.sec{padding:24px 18px 0}
+.sec h3{font-size:19px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.sec h3 a{color:var(--pillt);font-size:14px;font-weight:600;cursor:pointer}
+.box{background:var(--card);border-radius:20px;padding:4px 16px}
+.tx{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tx:last-child{border-bottom:0}
+.ti{width:44px;height:44px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-size:19px;flex-shrink:0}
+.tm{flex:1;min-width:0}.tm b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tm small{color:var(--mut);font-size:13px}
+.tv{font-weight:600;font-size:15px;white-space:nowrap}.tv.in{color:var(--acc)}
+.day{color:var(--mut);font-size:13px;font-weight:600;padding:16px 2px 4px;display:flex;justify-content:space-between}
+
+.head{padding:6px 18px 6px;display:flex;align-items:center;gap:12px}
+.head h2{font-size:24px}
+.big2{padding:14px 18px 0}.big2 small{color:var(--mut)}.big2 b{display:block;font-size:32px;margin-top:6px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:16px 18px 0;scrollbar-width:none}
+.chips button{background:var(--card);border:0;color:var(--txt);padding:10px 16px;border-radius:22px;font-size:14px;white-space:nowrap;cursor:pointer}
+.chips button.on{background:var(--pill);color:var(--pillt)}
+.lb{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--txt);font-size:16px;text-align:left;cursor:pointer}
+.lb:last-child{border-bottom:0}.lb span{flex:1}.lb em{color:var(--mut);font-style:normal;font-size:14px}
+.lb .ti svg{width:20px;height:20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid .tile{min-width:0;height:112px;font-size:14px;padding:14px}
+
+.cc{margin:16px 18px 0;height:200px;border-radius:20px;padding:20px;background:linear-gradient(135deg,#0b0b0b,#2a2a2a);border:1px solid #333;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.cc:before{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(47,211,154,.35),transparent 70%)}
+.chip{width:40px;height:30px;border-radius:7px;background:linear-gradient(135deg,#d8c27a,#9b8540)}
+.bar{height:7px;background:#333;border-radius:6px;overflow:hidden;margin:12px 0 8px}.bar span{display:block;height:100%;background:var(--acc)}
+.row{display:flex;justify-content:space-between;align-items:center}
+.mut{color:var(--mut);font-size:14px}
+.btn{width:100%;padding:16px;border:0;border-radius:28px;background:var(--acc);color:#04241a;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn.g{background:var(--card2);color:var(--txt)}
+
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#161616;border-top:1px solid #262626;display:flex;justify-content:space-around;padding:10px 0 calc(10px + env(safe-area-inset-bottom));z-index:20}
+nav button{background:none;border:0;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:5px;font-size:13px;cursor:pointer;position:relative;min-width:60px}
+nav button svg{width:25px;height:25px}
+nav button.on{color:var(--txt);font-weight:700}nav button.on svg{color:var(--acc);fill:rgba(47,211,154,.25)}
+nav button.on:before{content:"";position:absolute;top:-11px;width:100%;height:2px;background:var(--acc)}
+nav .nd{position:absolute;top:-2px;right:14px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:50}.ov.on{display:flex}
+.sheet{background:#1a1a1a;width:100%;max-width:480px;border-radius:26px 26px 0 0;padding:16px 20px calc(24px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;animation:u .25s}
+@keyframes u{from{transform:translateY(50px)}to{transform:none}}
+.grab{width:40px;height:5px;background:#444;border-radius:4px;margin:0 auto 18px}
+.sheet h3{font-size:21px;margin-bottom:6px}.sheet p.mut{margin-bottom:16px}
+.inp{width:100%;padding:15px;border:1px solid #333;border-radius:16px;background:var(--card);color:var(--txt);font-size:16px;margin-bottom:12px;outline:none;font-family:inherit}
+.inp:focus{border-color:var(--acc)}
+.inp.big{font-size:30px;font-weight:700;text-align:center}
+.pin{display:flex;justify-content:center;gap:16px;margin:20px 0}.pin span{width:15px;height:15px;border-radius:50%;border:2px solid var(--acc)}.pin span.f{background:var(--acc)}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.kp button{padding:17px;font-size:24px;border:0;border-radius:16px;background:var(--card);color:var(--txt);cursor:pointer}
+.ok{text-align:center}.ck{width:80px;height:80px;border-radius:50%;background:var(--acc);color:#04241a;display:grid;place-items:center;margin:8px auto 16px;font-size:40px;font-weight:800}
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-140px);background:#2a2a2a;color:#fff;padding:13px 18px;border-radius:16px;font-size:14px;z-index:99;transition:.35s;box-shadow:0 10px 30px rgba(0,0,0,.5)}.toast.on{transform:translate(-50%,0)}
+.inv{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line)}.inv:last-child{border:0}.inv small{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+.pos{color:var(--acc);font-size:13px;font-weight:600}
+
+/* ===== MINIMALISTA ===== */
+:root{--bg:#0f0f10;--card:#18181a;--card2:#222224;--line:#242426}
+html,body{background:var(--bg)}
+.circle{background:var(--card)}
+.seg{background:var(--card)}
+.seg button.on{background:var(--card2);color:#fff}
+.search{background:var(--card);border-radius:16px}
+.search:after{display:none}
+.spark{background:var(--acc);width:26px;height:26px;font-size:13px}
+.saldo b{font-size:36px;font-weight:600}
+.dv{font-size:13px}
+.pills button{background:#12372b;color:#5ff0bd;font-weight:600;font-size:16px;padding:12px 20px}
+.tile{background:var(--card);border-radius:16px;font-size:15px}
+.tile svg{color:var(--txt)}
+.feed,.box{background:var(--card);border-radius:16px}
+.ti{background:var(--card2)}
+.btn{background:var(--acc);color:#04241a;font-weight:600;border-radius:16px}
+.btn.g{background:var(--card2);color:var(--txt)}
+.bar{background:var(--card2)}
+.bar span{background:var(--acc)}
+nav{background:var(--bg);border-top:1px solid var(--line)}
+nav button.on:before{display:none}
+nav button.on svg{fill:none;color:var(--acc)}
+nav button.on{color:var(--txt);font-weight:600}
+.sheet{background:var(--card)}
+.inp{background:var(--bg);border:1px solid var(--line)}
+.kp button{background:var(--card2)}
+.chips button{background:var(--card)}
+.chips button.on{background:#12372b;color:#5ff0bd}
+.cc{height:190px;background:#1c1c1e;border:1px solid #2c2c2e;border-radius:16px}
+.cc:before{display:none}
+.chip{background:#c9b36a;height:26px;width:36px;border-radius:6px}
+.mini{margin:20px 18px 0;background:var(--card);border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.mini small{color:var(--mut);font-size:13px;display:block}
+.mini b{font-size:16px;font-weight:600}
+.mini .pc{font-size:22px;font-weight:600;color:var(--acc)}
+.mbar{margin:10px 0 0}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- INÍCIO -->
+<section class="screen on" id="s-home">
+  <div class="topbar">
+    <button class="circle" onclick="go('prof')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+    <div class="tr">
+      <button class="eyeb" onclick="toggleHide()" id="eyeI"></button>
+      <div class="seg"><button class="on" onclick="toast('Conta PF')">PF</button><button onclick="toast('Conta Global em US$')">US$</button></div>
+    </div>
+  </div>
+  <div class="search" onclick="openPix()"><span class="spark">✦</span>Faça um Pix</div>
+  <div class="saldo">
+    <small>Saldo</small>
+    <div class="r" onclick="go('ext')"><b id="bal"></b><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    <div class="dv" id="dayvar"></div>
+  </div>
+  <div class="pills">
+    <button onclick="go('pix')"><svg viewBox="0 0 24 24"><path d="M12 3l4 4-4 4-4-4zM12 13l4 4-4 4-4-4zM3 12l4-4 4 4-4 4zM13 12l4-4 4 4-4 4z"/></svg>Pix</button>
+    <button onclick="openBoleto()">Pagar</button>
+    <button onclick="go('card')">Cartões</button>
+    <button onclick="openTransfer()">Transferir</button>
+  </div>
+  <div class="hs">
+    <button class="tile" onclick="go('card')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Cartões</button>
+    <button class="tile" onclick="openMeta()"><svg viewBox="0 0 24 24"><path d="M19 10c0-3.9-3.1-6-7-6-4.4 0-8 2.7-8 7 0 2 1 3.6 2 4.6V19h3v-2h4v2h3v-3c1-.6 2-1.5 2.5-3H21v-3z"/><circle cx="15" cy="10" r=".5"/></svg>Minha<br>Meta</button>
+    <button class="tile" onclick="go('invest')"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>Investimentos</button>
+    <button class="tile" onclick="openRecarga()"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Recarga</button>
+    <button class="tile" onclick="openCobrar()"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3M21 14v7h-4"/></svg>Cobrar</button>
+    <button class="tile" onclick="toast('Seguro de vida ativo ✓')"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Seguros</button>
+  </div>
+
+  <div class="mini" id="pushCard" onclick="openAvisos()" style="display:none">
+    <div style="flex:1"><small>Avisos no iPhone</small><b>Ativar avisos de transações</b></div>
+    <span class="pc" style="font-size:20px">›</span>
+  </div>
+
+  <div class="feed" id="feed"></div>
+
+  <div class="mini" onclick="openMeta()">
+    <div style="flex:1">
+      <small id="bnT">Minha visão</small>
+      <b id="bnP"></b>
+      <div class="bar mbar"><span id="mbar" style="width:0"></span></div>
+    </div>
+    <span class="pc" id="pctT" style="margin-left:18px"></span>
+  </div>
+
+  <div class="sec">
+    <h3>Últimas transações <a onclick="go('ext')">Ver extrato</a></h3>
+    <div class="box" id="lastTx"></div>
+  </div>
+</section>
+
+<!-- EXTRATO -->
+<section class="screen" id="s-ext">
+  <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Extrato</h2></div>
+  <div class="big2"><small>Saldo disponível</small><b id="extBal"></b></div>
+  <div class="chips" id="fChips">
+    <button class="on" data-f="all">Tudo</button><button data-f="in">Entradas</button><button data-f="out">Saídas</button><button data-f="7">7 dias</button><button data-f="30">30 dias</button><button data-f="90">90 dias</button>
+  </div>
+  <div class="sec" style="padding-top:8px"><div id="extList"></div></div>
+</section>
+
+<!-- PIX -->
+<section class="screen" id="s-pix">
+  <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Pix</h2></div>
+  <div class="sec" style="padding-top:12px">
+    <div class="grid">
+      <button class="tile" onclick="openPix()"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg>Transferir</button>
+      <button class="tile" onclick="openCobrar()"><svg viewBox="0 0 24 24"><path d="M17 7L7 17M15 17H7V9"/></svg>Cobrar</button>
+      <button class="tile" onclick="openCopiaCola()"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>Copia e Cola</button>
+    </div>
+  </div>
+  <div class="sec"><h3>Minhas chaves</h3><div class="box">
+    <button class="lb" onclick="toast('Chave copiada')"><span class="ti">📱</span><span>Celular</span><em>(85) 9••••-3968</em></button>
+    <button class="lb" onclick="toast('Chave copiada')"><span class="ti">🔑</span><span>Aleatória</span><em>7f3a•••• </em></button>
+  </div></div>
+  <div class="sec"><h3>Meus limites</h3><div class="box" style="padding:16px">
+    <div class="row"><span class="mut">Diurno</span><b>R$ 200.000,00</b></div>
+    <div class="row" style="margin-top:12px"><span class="mut">Noturno</span><b>R$ 50.000,00</b></div>
+  </div></div>
+</section>
+
+<!-- CARTÃO -->
+<section class="screen" id="s-card">
+  <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Cartões</h2></div>
+  <div class="cc">
+    <div class="row"><b style="letter-spacing:2px">VISÃO</b><span class="mut">Black</span></div>
+    <div class="chip"></div>
+    <div><div style="letter-spacing:3px;font-size:16px">•••• •••• •••• 4417</div><div class="row mut" style="margin-top:8px;font-size:12px"><span id="ccName"></span><span>12/31</span></div></div>
+  </div>
+  <div class="sec"><div class="box" style="padding:18px">
+    <span class="mut">Fatura atual • vence dia 12</span>
+    <div style="font-size:30px;font-weight:700;margin-top:6px" id="cFat"></div>
+    <div class="bar"><span id="cBar"></span></div>
+    <div class="row"><span class="mut">Limite disponível</span><b id="cLim"></b></div>
+    <div class="row" style="margin-top:8px"><span class="mut">Limite total</span><span class="mut">R$ 300.000,00</span></div>
+    <button class="btn" onclick="payFatura()">Pagar fatura</button>
+  </div></div>
+  <div class="sec"><div class="box">
+    <button class="lb" onclick="toast('Cartão virtual •••• 9021')"><span class="ti">💳</span><span>Cartão virtual</span><em>›</em></button>
+    <button class="lb" onclick="toggleBlock()"><span class="ti">🔒</span><span>Bloquear cartão</span><em id="blk">Ativo</em></button>
+    <button class="lb" onclick="toast('184.320 pontos disponíveis')"><span class="ti">⭐</span><span>Pontos Loop</span><em>184.320</em></button>
+  </div></div>
+  <div class="sec"><h3>Compras recentes</h3><div class="box" id="ccTx"></div></div>
+</section>
+
+<!-- INVEST -->
+<section class="screen" id="s-invest">
+  <div class="head"><h2>Investimentos</h2></div>
+  <div class="big2"><small>Patrimônio investido</small><b id="invTot"></b><div class="dv" id="invRend"></div></div>
+  <div class="sec"><div class="box" id="invList"></div><button class="btn" style="margin-top:16px" onclick="openInvest()">Investir</button></div>
+</section>
+
+<!-- TODOS -->
+<section class="screen" id="s-all">
+  <div class="head"><h2>Todos os serviços</h2></div>
+  <div class="sec" style="padding-top:12px"><div class="grid">
+    <button class="tile" onclick="go('pix')">💠<span>Pix</span></button>
+    <button class="tile" onclick="openBoleto()">🧾<span>Pagar</span></button>
+    <button class="tile" onclick="openTransfer()">🏦<span>TED</span></button>
+    <button class="tile" onclick="go('card')">💳<span>Cartões</span></button>
+    <button class="tile" onclick="go('invest')">📈<span>Investir</span></button>
+    <button class="tile" onclick="openRecarga()">📱<span>Recarga</span></button>
+    <button class="tile" onclick="openCobrar()">🔳<span>Cobrar</span></button>
+    <button class="tile" onclick="openMeta()">🎯<span>Meta</span></button>
+    <button class="tile" onclick="toast('Pré-aprovado: R$ 450.000')">🤝<span>Empréstimo</span></button>
+    <button class="tile" onclick="toast('Conta Global: US$ 18.420,00')">🌎<span>Global</span></button>
+    <button class="tile" onclick="toast('Seguro ativo')">🛡️<span>Seguros</span></button>
+    <button class="tile" onclick="go('prof')">👤<span>Perfil</span></button>
+  </div></div>
+</section>
+
+<!-- PERFIL -->
+<section class="screen" id="s-prof">
+  <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Perfil</h2></div>
+  <div style="text-align:center;padding:18px">
+    <div class="fav" style="width:78px;height:78px;font-size:30px;margin:0 auto 12px" id="av"></div>
+    <b style="font-size:20px" id="pname"></b><div class="mut">Visão Private • Ag 0001 • CC 482193-7</div>
+  </div>
+  <div class="sec" style="padding-top:0"><div class="box">
+    <button class="lb" onclick="editName()"><span class="ti">👤</span><span>Meus dados</span><em>›</em></button>
+    <button class="lb" onclick="openMeta()"><span class="ti">🎯</span><span>Minha meta</span><em>›</em></button>
+    <button class="lb" onclick="toast('Segurança em dia ✓')"><span class="ti">🛡️</span><span>Segurança</span><em>›</em></button>
+    <button class="lb" onclick="openAvisos()"><span class="ti">🔔</span><span>Avisos no iPhone</span><em>›</em></button>
+    <button class="lb" onclick="resetMine()"><span class="ti">♻️</span><span>Limpar minhas operações</span><em>›</em></button>
+  </div>
+  <p class="mut" style="text-align:center;margin:20px 0;font-size:11px">Visão • app de visualização pessoal • valores fictícios</p></div>
+</section>
+</div>
+
+<nav>
+  <button class="on" data-s="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
+  <button data-s="invest" onclick="go('invest')"><svg viewBox="0 0 24 24"><path d="M3 20V9l6 4 5-7 7 5v9z"/></svg>Invest</button>
+  <button data-s="ext" onclick="go('ext')"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2zM9 8h6M9 12h6"/></svg>Extrato</button>
+  <button data-s="card" onclick="go('card')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>Cartão<span class="nd"></span></button>
+  <button data-s="all" onclick="go('all')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Todos</button>
+</nav>
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ---------- utilidades ---------- */
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const $=id=>document.getElementById(id);
+let hidden=LS.get('vb_hide',false);
+let NAME=LS.get('vb_name','Marcus');
+let GOAL=LS.get('vb_goal',1000000);
+const MIN=900000, MAX=1200000;
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+
+/* ---------- catálogo de movimentações ---------- */
+const OUT_SMALL=[
+ ['Supermercado Pão de Açúcar','🛒',120,980],['Posto Ipiranga','⛽',90,380],['iFood','🍔',35,180],
+ ['Farmácia Pague Menos','💊',25,260],['Uber','🚗',14,75],['Padaria Santo Trigo','🥖',12,90],
+ ['Netflix','🎬',55.9,55.9],['Spotify','🎧',21.9,21.9],['Restaurante Coco Bambu','🍽️',180,620],
+ ['Amazon','📦',60,900],['Mercado Livre','📦',45,1200],['Academia','💪',149,149],
+ ['Cinema','🍿',60,140],['Livraria Leitura','📚',40,260],['Pet Shop','🐾',70,340],['Starbucks','☕',18,45]
+];
+const OUT_BIG=[
+ ['Pix enviado • Construtora Horizonte','🏗️',8000,38000],['Boleto • Concessionária Toyota','🚙',12000,45000],
+ ['Pix enviado • Imobiliária Beira-Mar','🏠',6000,22000],['TED • Agência de Viagens','✈️',5000,28000],
+ ['Boleto • Escola','🎓',2500,6000],['Pix enviado • Oferta Igreja','⛪',1000,5000],
+ ['Boleto • IPTU','🧾',2000,7000],['Compra • Loja Apple','📱',4500,15000],['Pix enviado • Michelle','💛',1000,8000]
+];
+const IN_SMALL=[
+ ['Pix recebido • Cliente Resolve','💼',800,4500],['Pix recebido • Trevo Açaí','🍇',1200,6000],
+ ['Cashback','🎁',20,180],['Pix recebido • LanLan','🥟',900,4800],['Estorno','↩️',40,300]
+];
+const IN_BIG=[
+ ['TED recebida • Resolve Gestão de Tráfego','🚀',15000,60000],['Dividendos • ITSA4','📈',3000,14000],
+ ['Pix recebido • Contrato de gestão','💼',6000,25000],['Resgate CDB','🏦',10000,50000],
+ ['Aluguel recebido','🏢',4500,9000],['Bonificação anual','🏆',20000,70000]
+];
+
+/* ---------- motor determinístico: mesma história todo dia, novas transações a cada dia ---------- */
+function buildHistory(){
+  const now=new Date();
+  const start=new Date(now);start.setHours(0,0,0,0);start.setDate(start.getDate()-120);
+  let bal=1048372.55;
+  const txs=[];
+  for(let d=new Date(start);d<=now;d.setDate(d.getDate()+1)){
+    const key=ymd(d), r=mulberry32(hashStr('visao'+key));
+    const isToday=key===ymd(now);
+    const nowMin=now.getHours()*60+now.getMinutes();
+    // rendimento automático
+    const rend=+(bal*(0.00030+r()*0.00012)).toFixed(2);
+    const day=[{t:30,name:'Rendimento • Conta Remunerada',ic:'💹',v:rend}];
+    const n=3+Math.floor(r()*5);
+    for(let i=0;i<n;i++){
+      const t=7*60+Math.floor(r()*15*60);
+      const big=r()<0.16;
+      // tendência para o centro da faixa
+      let pIn=0.5+(1050000-bal)/500000; pIn=Math.max(.12,Math.min(.88,pIn));
+      if(!big) pIn*=0.55;
+      let isIn=r()<pIn;
+      const list=isIn?(big?IN_BIG:IN_SMALL):(big?OUT_BIG:OUT_SMALL);
+      const it=list[Math.floor(r()*list.length)];
+      let v=+(it[2]+r()*(it[3]-it[2])).toFixed(2);
+      day.push({t,name:it[0],ic:it[1],v:isIn?v:-v});
+    }
+    day.sort((a,b)=>a.t-b.t);
+    for(const x of day){
+      if(isToday && x.t>nowMin) continue;
+      let v=x.v;
+      if(bal+v<MIN+5000||bal+v>MAX-5000){ // mantém dentro da faixa
+        v=-v;
+        const pool=v>0?(Math.abs(v)>5000?IN_BIG:IN_SMALL):(Math.abs(v)>5000?OUT_BIG:OUT_SMALL);
+        const it=pool[Math.floor(Math.abs(v))%pool.length]; x.name=it[0]; x.ic=it[1];
+      }
+      bal=+(bal+v).toFixed(2);
+      const dt=new Date(d);dt.setHours(Math.floor(x.t/60),x.t%60,0,0);
+      txs.push({d:dt.getTime(),name:x.name,ic:x.ic,v,bal});
+    }
+  }
+  // operações feitas pelo usuário no app
+  const mine=LS.get('vb_mine',[]);
+  for(const m of mine){bal=+(bal+m.v).toFixed(2);txs.push({...m,bal})}
+  txs.sort((a,b)=>b.d-a.d);
+  return {bal,txs};
+}
+
+
+
+const EYE_ON='<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF='<svg viewBox="0 0 24 24"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M1 1l22 22"/></svg>';
+const FEED=[
+ ['Visão Invest','@visaoinvest','Seu dinheiro rendeu mais que a poupança neste mês. O CDB com liquidez diária segue pagando acima de 110% do CDI, com resgate na hora.','538','144','11'],
+ ['Visão Economia','@visaoeconomia','Dólar fecha em leve queda e bolsa sobe no pregão. Quem diversifica entre renda fixa e ações reduz o risco da carteira ao longo do tempo.','412','96','8'],
+ ['Visão Private','@visaoprivate','Dica do dia: automatize um valor fixo para investir todo mês. Constância pesa mais do que tentar acertar o melhor momento.','689','203','27'],
+ ['Visão Cartões','@visaocartoes','Seus pontos Loop podem virar milhas ou desconto na fatura. Veja as opções na aba Cartão.','301','58','5']
+];
+const LIMIT=300000;
+let H, filt='all', feedI=0;
+
+function txHTML(x){
+  const dt=new Date(x.d);
+  return `<div class="tx"><div class="ti">${x.ic}</div><div class="tm"><b>${x.name}</b><small>${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})} • ${dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="tv ${x.v>0?'in':''}">${hidden?'•••':(x.v>0?'+ ':'- ')+brl(Math.abs(x.v))}</div></div>`;
+}
+function render(){
+  H=buildHistory();
+  $('eyeI').innerHTML=hidden?EYE_OFF:EYE_ON;
+  $('bal').textContent=hidden?'R$ ••••••':brl(H.bal);
+  $('extBal').textContent=hidden?'R$ ••••••':brl(H.bal);
+  const t0=new Date();t0.setHours(0,0,0,0);
+  const dv=H.txs.filter(x=>x.d>=t0.getTime()).reduce((s,x)=>s+x.v,0);
+  $('dayvar').className='dv'+(dv<0?' neg':'');
+  $('dayvar').textContent=hidden?'':(dv>=0?'▲ ':'▼ ')+brl(Math.abs(dv))+' hoje';
+  $('pname').textContent=NAME;$('av').textContent=NAME[0].toUpperCase();$('ccName').textContent=NAME.toUpperCase();
+  $('lastTx').innerHTML=H.txs.slice(0,6).map(txHTML).join('');
+  const pct=Math.min(100,H.bal/GOAL*100);
+  $('bnT').textContent='Minha meta';
+  $('bnP').textContent=hidden?'R$ ••••••':brl(GOAL);
+  $('pctT').textContent=hidden?'••':pct.toFixed(0)+'%';$('mbar').style.width=pct+'%';
+  renderFeed();renderCard();renderExt();renderInvest();
+}
+function renderFeed(){
+  const f=FEED[feedI];
+  $('feed').innerHTML=`<div class="fh"><div class="fav">${f[0][0]}</div><div><b>${f[0]}</b><small>${f[1]}</small></div><span class="ago">${feedI+1}d</span></div><p>${f[2]}</p><div class="fa"><span>♡ ${f[3]}</span><span>💬 ${f[4]}</span><span>⟳ ${f[5]}</span></div><div class="dots">${FEED.map((_,i)=>`<i class="${i===feedI?'on':''}"></i>`).join('')}</div>`;
+}
+setInterval(()=>{feedI=(feedI+1)%FEED.length;renderFeed()},6000);
+
+function renderCard(){
+  const r=mulberry32(hashStr('cc'+ymd(new Date()).slice(0,7)));
+  const day=new Date().getDate();
+  const fat=+(9000+r()*14000+day*(900+r()*500)).toFixed(2);
+  const paid=LS.get('vb_fatpaid','')===ymd(new Date()).slice(0,7);
+  const f=paid?0:fat;
+  $('cFat').textContent=hidden?'R$ •••':brl(f);
+  $('cLim').textContent=hidden?'•••':brl(LIMIT-f);
+  $('cBar').style.width=(f/LIMIT*100)+'%';
+  const cc=[];
+  for(let i=0;i<6;i++){const it=OUT_SMALL[Math.floor(r()*OUT_SMALL.length)];const d=new Date();d.setDate(Math.max(1,day-i));d.setHours(10+Math.floor(r()*10),Math.floor(r()*60));cc.push({d:d.getTime(),name:it[0],ic:it[1],v:-(+(it[2]+r()*(it[3]-it[2])).toFixed(2))})}
+  $('ccTx').innerHTML=cc.map(txHTML).join('');
+}
+function renderExt(){
+  let list=H.txs;const now=Date.now();
+  if(filt==='in')list=list.filter(x=>x.v>0);
+  if(filt==='out')list=list.filter(x=>x.v<0);
+  if(['7','30','90'].includes(filt))list=list.filter(x=>x.d>=now-(+filt)*864e5);
+  list=list.slice(0,250);
+  let html='',last='';
+  for(const x of list){
+    const k=new Date(x.d).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+    if(k!==last){if(last)html+='</div>';html+=`<div class="day"><span>${k}</span><span>${hidden?'':'Saldo '+brl(x.bal)}</span></div><div class="box">`;last=k}
+    html+=txHTML(x);
+  }
+  if(last)html+='</div>';
+  $('extList').innerHTML=html||'<p class="mut">Nenhuma movimentação</p>';
+}
+function renderInvest(){
+  const r=mulberry32(hashStr('inv'+ymd(new Date())));
+  const base=[['CDB Visão 110% CDI','Liquidez diária',412000],['Tesouro IPCA+ 2035','Vencimento 2035',286500],['LCI Imobiliária','Isento de IR',198000],['Fundo Multimercado','Rentab. 12m: 14,2%',134800],['Ações • Carteira','ITSA4, WEGE3, BBAS3',97300]];
+  const extra=LS.get('vb_inv',0);let tot=0,rend=0;
+  $('invList').innerHTML=base.map((b,i)=>{const v=b[2]*(1+(r()*0.012-0.002))+(i===0?extra:0);const rd=v-b[2]-(i===0?extra:0);tot+=v;rend+=rd;
+    return `<div class="inv"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b>${hidden?'•••':brl(v)}</b><div class="pos">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
+  $('invTot').textContent=hidden?'R$ ••••••':brl(tot);
+  $('invRend').textContent=hidden?'':'▲ '+brl(rend)+' no mês';
+}
+
+function go(s){
+  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));
+  $('s-'+s).classList.add('on');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  window.scrollTo(0,0);
+}
+$('fChips').addEventListener('click',e=>{if(e.target.dataset.f){filt=e.target.dataset.f;document.querySelectorAll('#fChips button').forEach(b=>b.classList.toggle('on',b===e.target));renderExt()}});
+function toggleHide(){hidden=!hidden;LS.set('vb_hide',hidden);render()}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),2200)}
+
+function openM(html){$('sheet').innerHTML='<div class="grab"></div>'+html;$('ov').classList.add('on')}
+function closeM(){$('ov').classList.remove('on')}
+function moneyInput(id){return `<input class="inp big" id="${id}" inputmode="numeric" placeholder="R$ 0,00" oninput="maskMoney(this)">`}
+function maskMoney(el){let v=el.value.replace(/\D/g,'');v=(parseInt(v||'0')/100);el.value=v?brl(v):'';el.dataset.v=v}
+function val(id){return parseFloat($(id).dataset.v||'0')}
+function flow(title,sub,fields,label,onDone){
+  openM(`<h3>${title}</h3><p class="mut">${sub}</p>${fields}<button class="btn" id="go">${label}</button><button class="btn g" onclick="closeM()">Cancelar</button>`);
+  $('go').onclick=()=>{const r=onDone();if(r)askPin(r)};
+}
+function askPin(r){
+  let pin='';
+  const draw=()=>{$('pinDots').innerHTML=[0,1,2,3].map(i=>`<span class="${i<pin.length?'f':''}"></span>`).join('')};
+  openM(`<h3>Confirme sua senha</h3><p class="mut">${r.desc} • <b>${brl(r.amount)}</b></p><div class="pin" id="pinDots"></div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-k="${k}">${k}</button>`).join('')}</div>`);
+  draw();
+  $('sheet').querySelectorAll('.kp button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==='⌫')pin=pin.slice(0,-1);else if(k!==''&&pin.length<4)pin+=k;draw();if(pin.length===4)setTimeout(()=>done(r),250)});
+}
+function done(r){
+  if(r.apply)r.apply();
+  else{const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:r.name,ic:r.ic,v:r.v});LS.set('vb_mine',m)}
+  render();
+  openM(`<div class="ok"><div class="ck">✓</div><h3>${r.okTitle||'Operação realizada'}</h3><p class="mut" style="margin:6px 0 18px">${r.desc}<br><b style="font-size:24px;color:var(--txt)">${brl(r.amount)}</b><br>${new Date().toLocaleString('pt-BR')}</p><button class="btn" onclick="closeM()">Concluir</button></div>`);
+}
+function openPix(){flow('Pix','Para quem você quer enviar?',`<input class="inp" id="pk" placeholder="CPF, celular, e-mail ou chave">${moneyInput('pv')}`,'Continuar',()=>{const k=$('pk').value.trim(),v=val('pv');if(!k||!v){toast('Preencha chave e valor');return}return{desc:'Pix para '+k,amount:v,name:'Pix enviado • '+k,ic:'↗️',v:-v,okTitle:'Pix enviado!'}})}
+function openTransfer(){flow('Transferência','TED para outra instituição',`<input class="inp" id="tn" placeholder="Nome do favorecido"><input class="inp" placeholder="Banco • Agência • Conta">${moneyInput('tv')}`,'Continuar',()=>{const n=$('tn').value.trim(),v=val('tv');if(!n||!v){toast('Preencha os dados');return}return{desc:'TED para '+n,amount:v,name:'TED enviada • '+n,ic:'🏦',v:-v,okTitle:'Transferência agendada'}})}
+function openBoleto(){flow('Pagar','Digite ou cole o código de barras',`<input class="inp" inputmode="numeric" placeholder="00000.00000 00000.000000 ...">${moneyInput('bv')}`,'Pagar',()=>{const v=val('bv');if(!v){toast('Informe o valor');return}return{desc:'Pagamento de boleto',amount:v,name:'Pagamento de boleto',ic:'🧾',v:-v,okTitle:'Pagamento realizado'}})}
+function openRecarga(){
+  flow('Recarga de celular','Escolha o número e o valor',`<input class="inp" id="rn" inputmode="tel" placeholder="(85) 99999-9999"><div class="chips" id="rc" style="padding:0 0 14px">${[20,30,50,100].map(x=>`<button data-v="${x}">R$ ${x}</button>`).join('')}</div>`,'Recarregar',()=>{const s=document.querySelector('#rc .on');if(!s){toast('Escolha um valor');return}const v=+s.dataset.v;return{desc:'Recarga '+($('rn').value||'celular'),amount:v,name:'Recarga de celular',ic:'📱',v:-v,okTitle:'Recarga feita'}});
+  $('rc').onclick=e=>{if(e.target.dataset.v)document.querySelectorAll('#rc button').forEach(b=>b.classList.toggle('on',b===e.target))};
+}
+function openCobrar(){openM(`<h3>Cobrar via Pix</h3><p class="mut">Gere um QR Code para receber</p>${moneyInput('cv')}<button class="btn" onclick="genQR()">Gerar cobrança</button><div id="qr"></div>`)}
+function genQR(){const v=val('cv');const r=mulberry32(Date.now()&0xffff);let c='';for(let i=0;i<121;i++)c+=`<span style="background:${r()>.5?'#111':'#fff'}"></span>`;$('qr').innerHTML=`<div style="display:grid;grid-template-columns:repeat(11,1fr);width:180px;height:180px;margin:18px auto;border:8px solid #fff">${c}</div><p class="mut" style="text-align:center">Cobrança de ${v?brl(v):'valor livre'}</p>`}
+function openCopiaCola(){flow('Pix Copia e Cola','Cole o código Pix',`<textarea class="inp" rows="3" placeholder="00020126..."></textarea>${moneyInput('ccv')}`,'Pagar',()=>{const v=val('ccv');if(!v){toast('Informe o valor');return}return{desc:'Pix Copia e Cola',amount:v,name:'Pix enviado • Copia e Cola',ic:'📋',v:-v,okTitle:'Pix enviado!'}})}
+function openInvest(){flow('Investir','CDB Visão 110% CDI • liquidez diária',moneyInput('iv'),'Investir',()=>{const v=val('iv');if(!v){toast('Informe o valor');return}return{desc:'Aplicação CDB Visão',amount:v,okTitle:'Aplicação realizada',apply:()=>{LS.set('vb_inv',LS.get('vb_inv',0)+v);const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:'Aplicação • CDB Visão',ic:'📈',v:-v});LS.set('vb_mine',m)}}})}
+function payFatura(){
+  const f=parseFloat($('cFat').textContent.replace(/[^\d,]/g,'').replace(',','.'))||0;
+  if(!f){toast('Fatura já paga 🎉');return}
+  askPin({desc:'Fatura do cartão Black',amount:f,okTitle:'Fatura paga',apply:()=>{LS.set('vb_fatpaid',ymd(new Date()).slice(0,7));const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:'Pagamento fatura cartão',ic:'💳',v:-f});LS.set('vb_mine',m)}});
+}
+function openMeta(){openM(`<h3>🎯 Minha meta</h3><p class="mut">Defina o patrimônio que você está construindo</p>${moneyInput('gv')}<button class="btn" onclick="saveGoal()">Salvar meta</button>`)}
+function saveGoal(){const v=val('gv');if(v){GOAL=v;LS.set('vb_goal',v);render();closeM();toast('Meta atualizada')}}
+function editName(){openM(`<h3>Meus dados</h3><p class="mut">Como você quer ser chamado?</p><input class="inp" id="nm" value="${NAME}"><button class="btn" onclick="saveName()">Salvar</button>`)}
+function saveName(){const v=$('nm').value.trim();if(v){NAME=v;LS.set('vb_name',v);render();closeM()}}
+function toggleBlock(){const b=$('blk');const on=b.textContent==='Ativo';b.textContent=on?'Bloqueado':'Ativo';toast(on?'Cartão bloqueado':'Cartão desbloqueado')}
+function resetMine(){LS.set('vb_mine',[]);LS.set('vb_inv',0);LS.set('vb_fatpaid','');render();toast('Operações apagadas')}
+
+render();
+setInterval(render,60000);
+
+
+
+/* ---------- avisos push ---------- */
+const VAPID_PUBLIC="BM7AX7EsWPCX4g-lb_LRWtMCGn4LfomC1RB3MmaBbzOBIFfAMUKUQExAneuPxFrKc6l0fV2M62FhjKymwchKPfk";
+function b64u(s){const p='='.repeat((4-s.length%4)%4);const r=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))}
+const standalone=()=>window.navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+function pushOk(){return 'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window}
+function openAvisos(){
+  if(!pushOk()||!standalone()){
+    openM('<h3>Instale o app primeiro</h3><p class="mut">Abra esta página no Safari, toque em Compartilhar e em "Adicionar à Tela de Início". Depois abra o app pelo ícone Visão e toque aqui de novo.</p><button class="btn" onclick="closeM()">Entendi</button>');return}
+  openM('<h3>Avisos de transações</h3><p class="mut">Receba cada movimentação na tela do iPhone, com a logo do app.</p><button class="btn" id="enb">Ativar avisos</button><button class="btn g" onclick="closeM()">Agora não</button>');
+  $('enb').onclick=async()=>{
+    try{
+      const perm=await Notification.requestPermission();
+      if(perm!=='granted'){toast('Permissão negada nos Ajustes do iPhone');return}
+      const reg=await navigator.serviceWorker.ready;
+      let sub=await reg.pushManager.getSubscription();
+      if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(VAPID_PUBLIC)});
+      showCode(sub);
+      refreshPushCard();
+    }catch(e){toast('Erro: '+e.message)}
+  };
+}
+function showCode(sub){
+  openM('<h3>Avisos ativados ✓</h3><p class="mut">Copie o código abaixo e envie para finalizar a ligação com o servidor.</p><textarea class="inp" id="code" rows="5" readonly></textarea><button class="btn" onclick="copyCode()">Copiar código</button>');
+  $('code').value=JSON.stringify(sub);
+}
+function copyCode(){
+  const t=$('code');t.focus();t.select();t.setSelectionRange(0,999999);
+  let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+  if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value).catch(()=>{});
+  toast('Código copiado');
+}
+async function refreshPushCard(){
+  const c=$('pushCard');if(!c)return;
+  try{
+    if(!pushOk()){c.style.display='none';return}
+    const reg=await navigator.serviceWorker.getRegistration();
+    const sub=reg?await reg.pushManager.getSubscription():null;
+    c.style.display=(sub&&Notification.permission==='granted')?'none':'flex';
+  }catch(e){c.style.display='none'}
+}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(refreshPushCard).catch(()=>{})}
+</script>
+</body>
+</html>

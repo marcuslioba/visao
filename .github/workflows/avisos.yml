@@ -1,0 +1,52 @@
+name: Avisos Visão
+
+on:
+  schedule:
+    - cron: '30 9 * * *'    # 06:30 em Fortaleza: avisos das 07h às 11h
+    - cron: '30 13 * * *'   # 10:30: avisos das 11h às 15h
+    - cron: '30 17 * * *'   # 14:30: avisos das 15h às 19h
+    - cron: '30 21 * * *'   # 18:30: avisos das 19h às 24h
+  workflow_dispatch:
+    inputs:
+      janela:
+        description: 'teste = manda 1 aviso agora | resto = avisos que faltam hoje | janela1..4 = faixas do dia'
+        type: choice
+        default: teste
+        options:
+          - teste
+          - resto
+          - janela1
+          - janela2
+          - janela3
+          - janela4
+
+jobs:
+  avisos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      TZ: America/Fortaleza
+      VAPID_PUBLIC: BM7AX7EsWPCX4g-lb_LRWtMCGn4LfomC1RB3MmaBbzOBIFfAMUKUQExAneuPxFrKc6l0fV2M62FhjKymwchKPfk
+      VAPID_PRIVATE: ${{ secrets.VAPID_PRIVATE }}
+      SUBSCRIPTION: ${{ secrets.SUBSCRIPTION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar web-push
+        run: npm install --no-save web-push@3
+      - name: Definir janela
+        run: |
+          J="${{ inputs.janela }}"
+          if [ -z "$J" ]; then
+            case "${{ github.event.schedule }}" in
+              "30 9 * * *") J=janela1;;
+              "30 13 * * *") J=janela2;;
+              "30 17 * * *") J=janela3;;
+              *) J=janela4;;
+            esac
+          fi
+          echo "JANELA=$J" >> "$GITHUB_ENV"
+      - name: Enviar avisos
+        run: node push.js
