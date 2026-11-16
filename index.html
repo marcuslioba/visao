@@ -229,6 +229,18 @@ body:before{content:"";position:fixed;top:0;left:0;right:0;height:260px;backgrou
 .cc.deb{background:linear-gradient(135deg,#2fd39a,#1fa87b)}
 button,.tile,.orow,.promo,.mini,.feed{transition:transform .15s,background .25s}
 button:active,.tile:active,.orow:active,.promo:active{transform:scale(.97)}
+
+/* tempo e movimento iguais ao app de referência: ~180ms na linha, esqueleto de carregamento breve */
+nav .ind{transition:transform .18s cubic-bezier(.2,.85,.25,1),width .18s}
+nav button{transition:color .15s,transform .12s}
+.screen{position:relative}
+.screen.skl>*:not(.skel){opacity:0;animation:none!important}
+.screen.on:not(.skl)>*{animation:up .42s both cubic-bezier(.2,.8,.2,1)}
+.screen.on>*{animation:none}
+.skel{position:absolute;left:0;right:0;top:0;padding:14px 18px;display:flex;flex-direction:column;gap:14px;z-index:3;pointer-events:none}
+.skel i,.skel .sq i{display:block;border-radius:16px;background:linear-gradient(90deg,#1b1b1b 0%,#262626 45%,#1b1b1b 90%);background-size:220% 100%;animation:shim 1s linear infinite}
+.skel .sq{display:flex;gap:10px}.skel .sq i{width:92px;height:92px;flex:none}
+@keyframes shim{from{background-position:120% 0}to{background-position:-100% 0}}
 </style>
 </head>
 <body>
@@ -590,9 +602,18 @@ function go(s){
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   window.scrollTo(0,0);
   moveInd();
+  const sc=$('s-'+s);
+  if(sc&&!sc._first){
+    sc.classList.add('skl');
+    const k=document.createElement('div');k.className='skel';
+    k.innerHTML='<i style="height:46px;width:58%"></i><i style="height:58px"></i><div class="sq"><i></i><i></i><i></i><i></i></div><i style="height:150px"></i><i style="height:22px;width:40%"></i><div class="sq"><i></i><i></i><i></i><i></i></div><i style="height:64px"></i><i style="height:64px"></i>';
+    sc.prepend(k);
+    clearTimeout(sc._t);
+    sc._t=setTimeout(()=>{k.remove();sc.classList.remove('skl')},320);
+  }
 }
 function moveInd(){const n=document.querySelector('nav'),b=n&&n.querySelector('button.on'),i=n&&n.querySelector('.ind');if(!b||!i)return;i.style.width=b.offsetWidth+'px';i.style.transform='translateX('+b.offsetLeft+'px)'}
-addEventListener('resize',moveInd);addEventListener('load',()=>{moveInd();setTimeout(moveInd,300)});
+addEventListener('resize',moveInd);addEventListener('load',()=>{document.querySelectorAll('.screen').forEach(e=>e._first=false);moveInd();setTimeout(moveInd,300)});
 $('fChips').addEventListener('click',e=>{if(e.target.dataset.f){filt=e.target.dataset.f;document.querySelectorAll('#fChips button').forEach(b=>b.classList.toggle('on',b===e.target));renderExt()}});
 function toggleHide(){hidden=!hidden;LS.set('vb_hide',hidden);render()}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),2200)}
