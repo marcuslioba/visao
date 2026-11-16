@@ -1,7 +1,7 @@
 const J=process.env.JANELA||'teste';
 const DRY=process.env.DRY==='1';
-const PUB=process.env.VAPID_PUBLIC||'';
-const PRIV=process.env.VAPID_PRIVATE||'';
+const PUB=(process.env.VAPID_PUBLIC||'').trim();
+const PRIV=(process.env.VAPID_PRIVATE||'').replace(/[\s"'=]/g,'');
 const SUBJECT='https://marcuslioba.github.io/visao/';
 const localStorage={getItem:()=>null,setItem:()=>{}};
 const RD=Date;
@@ -121,7 +121,7 @@ async function send(webpush,sub,x){
     webpush=require('web-push');
     if(!process.env.SUBSCRIPTION)throw new Error('Segredo SUBSCRIPTION vazio. Ative os avisos no app e cadastre o código.');
     if(!PRIV)throw new Error('Segredo VAPID_PRIVATE vazio.');
-    sub=JSON.parse(process.env.SUBSCRIPTION);
+    sub=JSON.parse(process.env.SUBSCRIPTION.trim());
     webpush.setVapidDetails(SUBJECT,PUB,PRIV);
   }
   const {txs}=buildHistory();
