@@ -119,6 +119,10 @@ async function send(webpush,sub,x){
   let webpush=null,sub=null;
   if(!DRY){
     webpush=require('web-push');
+    const raw=process.env.VAPID_PRIVATE||'';
+    const estranhos=[...new Set(PRIV.replace(/[A-Za-z0-9_-]/g,''))].map(c=>c.charCodeAt(0));
+    console.log('diagnostico VAPID_PRIVATE: tamanho bruto',raw.length,'| tamanho limpo',PRIV.length,'(esperado 43) | codigos de caracteres invalidos:',JSON.stringify(estranhos));
+    try{const sj=JSON.parse((process.env.SUBSCRIPTION||'').trim());console.log('diagnostico SUBSCRIPTION: host',new URL(sj.endpoint).host,'| chaves',Object.keys(sj.keys||{}).join(','))}catch(e){console.log('diagnostico SUBSCRIPTION: JSON invalido -',e.message)}
     if(!process.env.SUBSCRIPTION)throw new Error('Segredo SUBSCRIPTION vazio. Ative os avisos no app e cadastre o código.');
     if(!PRIV)throw new Error('Segredo VAPID_PRIVATE vazio.');
     sub=JSON.parse(process.env.SUBSCRIPTION.trim());
