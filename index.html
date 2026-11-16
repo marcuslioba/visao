@@ -241,6 +241,14 @@ nav button{transition:color .15s,transform .12s}
 .skel i,.skel .sq i{display:block;border-radius:16px;background:linear-gradient(90deg,#1b1b1b 0%,#262626 45%,#1b1b1b 90%);background-size:220% 100%;animation:shim 1s linear infinite}
 .skel .sq{display:flex;gap:10px}.skel .sq i{width:92px;height:92px;flex:none}
 @keyframes shim{from{background-position:120% 0}to{background-position:-100% 0}}
+
+/* vidro escuro: fundo quase preto, brilho verde translúcido e borda fina */
+.btn,.promo button{background:linear-gradient(135deg,rgba(47,211,154,.16),rgba(47,211,154,.04));color:#8ef0c9;border:1px solid rgba(47,211,154,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.btn.g{background:var(--card2);color:var(--txt);border:0;box-shadow:none}
+.cc.deb{background:radial-gradient(120% 90% at 88% 0%,rgba(47,211,154,.24),rgba(47,211,154,0) 62%),linear-gradient(135deg,#10201a,#090e0c);color:#dff7ee;border:1px solid rgba(47,211,154,.3)}
+.cc.deb .chip{background:#c9b36a}
+.cc.deb .row span{color:#9fd8c2}
+.pos.neg{color:var(--red)}
 </style>
 </head>
 <body>
@@ -591,7 +599,7 @@ function renderInvest(){
   const base=[['CDB Vision 110% CDI','Liquidez diária',412000],['Tesouro IPCA+ 2035','Vencimento 2035',286500],['LCI Imobiliária','Isento de IR',198000],['Fundo Multimercado','Rentab. 12m: 14,2%',134800],['Ações • Carteira','ITSA4, WEGE3, BBAS3',97300]];
   const extra=LS.get('vb_inv',0);let tot=0,rend=0;
   $('invList').innerHTML=base.map((b,i)=>{const v=b[2]*(1+(r()*0.012-0.002))+(i===0?extra:0);const rd=v-b[2]-(i===0?extra:0);tot+=v;rend+=rd;
-    return `<div class="inv"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b>${hidden?'•••':brl(v)}</b><div class="pos">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
+    return `<div class="inv"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b>${hidden?'•••':brl(v)}</b><div class="pos${rd<0?' neg':''}">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
   $('invTot').textContent=hidden?'R$ ••••••':brl(tot);
   $('invRend').textContent=hidden?'':'▲ '+brl(rend)+' no mês';
 }
