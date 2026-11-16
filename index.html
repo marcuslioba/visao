@@ -13,7 +13,7 @@
 <link rel="icon" type="image/png" href="icon-192.png">
 <title>Vision Bank</title>
 <style>
-:root{--bg:#121212;--card:#1e1e1e;--card2:#262626;--txt:#f2f2f2;--mut:#9a9a9a;--acc:#2fd39a;--pill:#113a2c;--pillt:#5ff0bd;--red:#ff6b6b;--line:#2b2b2b}
+:root{--bg:#121212;--card:#1e1e1e;--card2:#262626;--txt:#f2f2f2;--mut:#9a9a9a;--acc:#2db487;--pill:#113a2c;--pillt:#5ff0bd;--red:#ff6b6b;--line:#2b2b2b}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;overscroll-behavior:none}
 .app{max-width:480px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 0 calc(90px + env(safe-area-inset-bottom))}
@@ -241,6 +241,20 @@ nav button{transition:color .15s,transform .12s}
 .skel i,.skel .sq i{display:block;border-radius:16px;background:linear-gradient(90deg,#1b1b1b 0%,#262626 45%,#1b1b1b 90%);background-size:220% 100%;animation:shim 1s linear infinite}
 .skel .sq{display:flex;gap:10px}.skel .sq i{width:92px;height:92px;flex:none}
 @keyframes shim{from{background-position:120% 0}to{background-position:-100% 0}}
+
+/* verde mais escuro e sofisticado, com toque translúcido */
+:root{--gdeep:linear-gradient(135deg,rgba(24,112,82,.92),rgba(10,58,43,.92))}
+.btn,.promo button{background:var(--gdeep);color:#e6fbf3;border:1px solid rgba(130,235,195,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.btn.g{background:var(--card2);color:var(--txt);border:0;box-shadow:none}
+.spark{background:var(--gdeep);color:#d9fbee;border:1px solid rgba(130,235,195,.28)}
+.pills button,.pillb,.chips button.on{background:rgba(30,140,102,.16);color:#7fe8c4;border:1px solid rgba(130,235,195,.18)}
+.promo{background:linear-gradient(135deg,rgba(14,26,21,.95),rgba(18,64,48,.9));border:1px solid rgba(130,235,195,.14)}
+.cc.deb{background:radial-gradient(120% 90% at 85% 0%,rgba(130,235,195,.22),rgba(130,235,195,0) 60%),linear-gradient(135deg,#145c44,#0b3a2b);color:#e6fbf3;border:1px solid rgba(130,235,195,.3)}
+.cc.deb .chip{background:rgba(201,179,106,.85)}
+.cc.deb .row span{color:#a9d9c7}
+.ind{background:var(--acc)}
+.bar span{background:linear-gradient(90deg,#1f8a67,#2db487)}
+.fav{background:var(--gdeep)!important;color:#d9fbee!important;border:1px solid rgba(130,235,195,.25)}
 </style>
 </head>
 <body>
