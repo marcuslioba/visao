@@ -252,7 +252,8 @@ nav button{transition:color .15s,transform .12s}
 #s-invest .head{padding-left:18px}
 
 /* degradê do topo: nasce na borda do iPhone (sob a barra de status) e some suavemente no preto */
-body:before{height:420px;background:radial-gradient(135% 100% at 50% 0%,rgba(47,211,154,.22) 0%,rgba(47,211,154,.14) 22%,rgba(47,211,154,.08) 42%,rgba(47,211,154,.035) 62%,rgba(47,211,154,.01) 82%,rgba(47,211,154,0) 100%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 100%)}
+body:before{height:420px;background:radial-gradient(135% 100% at 50% 0%,rgba(47,211,154,.22) 0%,rgba(47,211,154,.14) 22%,rgba(47,211,154,.08) 42%,rgba(47,211,154,.035) 62%,rgba(47,211,154,.01) 82%,rgba(47,211,154,0) 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 36%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 36%,transparent 100%)}
+body:after{content:"";position:fixed;top:0;left:0;right:0;height:64px;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,0) 100%);pointer-events:none;z-index:1}
 </style>
 </head>
 <body>
