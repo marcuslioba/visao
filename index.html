@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Visão">
+<meta name="apple-mobile-web-app-title" content="Vision Bank">
 <meta name="theme-color" content="#0f0f10">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
-<title>Visão</title>
+<title>Vision Bank</title>
 <style>
 :root{--bg:#121212;--card:#1e1e1e;--card2:#262626;--txt:#f2f2f2;--mut:#9a9a9a;--acc:#2fd39a;--pill:#113a2c;--pillt:#5ff0bd;--red:#ff6b6b;--line:#2b2b2b}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -294,7 +294,7 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
     <button onclick="toast('Central de ajuda Pix')"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></i>Ajuda<br>Pix</button>
     <button onclick="toast('Contestar Pix')"><i><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5M9 9l6 6M15 9l-6 6"/></svg></i>Contestar<br>Pix</button>
   </div>
-  <div class="promo" style="margin-top:22px" onclick="toast('Consórcio Visão')">
+  <div class="promo" style="margin-top:22px" onclick="toast('Consórcio Vision')">
     <div><small>Consórcio</small><b>Primeira parcela em oferta</b><span>Pague apenas R$ 1 por dia no 1º mês</span></div>
     <button type="button">Aproveitar</button>
   </div>
@@ -315,12 +315,12 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
   <div class="hl"><h1>Precisando de limite?</h1><button class="pillb" onclick="toast('Seu limite de R$ 300.000,00 já é o máximo disponível')">Acessar opções</button></div>
   <div class="hs cards">
     <div class="cc">
-      <div class="row"><b style="letter-spacing:2px">VISÃO</b><span class="mut">crédito</span></div>
+      <div class="row"><b style="letter-spacing:2px">VISION</b><span class="mut">crédito</span></div>
       <div class="chip"></div>
       <div><div style="letter-spacing:3px;font-size:16px">•••• 4417</div><div class="row mut" style="margin-top:8px;font-size:12px"><span id="ccName"></span><span>12/31</span></div></div>
     </div>
     <div class="cc deb">
-      <div class="row"><b style="letter-spacing:2px">VISÃO</b><span>débito</span></div>
+      <div class="row"><b style="letter-spacing:2px">VISION</b><span>débito</span></div>
       <div class="chip"></div>
       <div><div style="letter-spacing:3px;font-size:16px">•••• 2658</div><div class="row" style="margin-top:8px;font-size:12px"><span id="ccName2"></span><span>12/31</span></div></div>
     </div>
@@ -373,7 +373,7 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
   <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Perfil</h2></div>
   <div style="text-align:center;padding:18px">
     <div class="fav" style="width:78px;height:78px;font-size:30px;margin:0 auto 12px" id="av"></div>
-    <b style="font-size:20px" id="pname"></b><div class="mut">Visão Private • Ag 0001 • CC 482193-7</div>
+    <b style="font-size:20px" id="pname"></b><div class="mut">Vision Private • Ag 0001 • CC 482193-7</div>
   </div>
   <div class="sec" style="padding-top:0"><div class="box">
     <button class="lb" onclick="editName()"><span class="ti">👤</span><span>Meus dados</span><em>›</em></button>
@@ -382,7 +382,7 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
     <button class="lb" onclick="openAvisos()"><span class="ti">🔔</span><span>Avisos no iPhone</span><em>›</em></button>
     <button class="lb" onclick="resetMine()"><span class="ti">♻️</span><span>Limpar minhas operações</span><em>›</em></button>
   </div>
-  <p class="mut" style="text-align:center;margin:20px 0;font-size:11px">Visão • app de visualização pessoal • valores fictícios</p></div>
+  <p class="mut" style="text-align:center;margin:20px 0;font-size:11px">Vision Bank • app de visualização pessoal • valores fictícios</p></div>
 </section>
 </div>
 
@@ -486,10 +486,10 @@ function buildHistory(){
 const EYE_ON='<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_OFF='<svg viewBox="0 0 24 24"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M1 1l22 22"/></svg>';
 const FEED=[
- ['Visão Invest','@visaoinvest','Seu dinheiro rendeu mais que a poupança neste mês. O CDB com liquidez diária segue pagando acima de 110% do CDI, com resgate na hora.','538','144','11'],
- ['Visão Economia','@visaoeconomia','Dólar fecha em leve queda e bolsa sobe no pregão. Quem diversifica entre renda fixa e ações reduz o risco da carteira ao longo do tempo.','412','96','8'],
- ['Visão Private','@visaoprivate','Dica do dia: automatize um valor fixo para investir todo mês. Constância pesa mais do que tentar acertar o melhor momento.','689','203','27'],
- ['Visão Cartões','@visaocartoes','Seus pontos Loop podem virar milhas ou desconto na fatura. Veja as opções na aba Cartão.','301','58','5']
+ ['Vision Invest','@visioninvest','Seu dinheiro rendeu mais que a poupança neste mês. O CDB com liquidez diária segue pagando acima de 110% do CDI, com resgate na hora.','538','144','11'],
+ ['Vision Economia','@visioneconomia','Dólar fecha em leve queda e bolsa sobe no pregão. Quem diversifica entre renda fixa e ações reduz o risco da carteira ao longo do tempo.','412','96','8'],
+ ['Vision Private','@visionprivate','Dica do dia: automatize um valor fixo para investir todo mês. Constância pesa mais do que tentar acertar o melhor momento.','689','203','27'],
+ ['Vision Cartões','@visioncartoes','Seus pontos Loop podem virar milhas ou desconto na fatura. Veja as opções na aba Cartão.','301','58','5']
 ];
 const LIMIT=300000;
 let H, filt='all', feedI=0;
@@ -556,7 +556,7 @@ function renderExt(){
 }
 function renderInvest(){
   const r=mulberry32(hashStr('inv'+ymd(new Date())));
-  const base=[['CDB Visão 110% CDI','Liquidez diária',412000],['Tesouro IPCA+ 2035','Vencimento 2035',286500],['LCI Imobiliária','Isento de IR',198000],['Fundo Multimercado','Rentab. 12m: 14,2%',134800],['Ações • Carteira','ITSA4, WEGE3, BBAS3',97300]];
+  const base=[['CDB Vision 110% CDI','Liquidez diária',412000],['Tesouro IPCA+ 2035','Vencimento 2035',286500],['LCI Imobiliária','Isento de IR',198000],['Fundo Multimercado','Rentab. 12m: 14,2%',134800],['Ações • Carteira','ITSA4, WEGE3, BBAS3',97300]];
   const extra=LS.get('vb_inv',0);let tot=0,rend=0;
   $('invList').innerHTML=base.map((b,i)=>{const v=b[2]*(1+(r()*0.012-0.002))+(i===0?extra:0);const rd=v-b[2]-(i===0?extra:0);tot+=v;rend+=rd;
     return `<div class="inv"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b>${hidden?'•••':brl(v)}</b><div class="pos">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
@@ -606,7 +606,7 @@ function openRecarga(){
 function openCobrar(){openM(`<h3>Cobrar via Pix</h3><p class="mut">Gere um QR Code para receber</p>${moneyInput('cv')}<button class="btn" onclick="genQR()">Gerar cobrança</button><div id="qr"></div>`)}
 function genQR(){const v=val('cv');const r=mulberry32(Date.now()&0xffff);let c='';for(let i=0;i<121;i++)c+=`<span style="background:${r()>.5?'#111':'#fff'}"></span>`;$('qr').innerHTML=`<div style="display:grid;grid-template-columns:repeat(11,1fr);width:180px;height:180px;margin:18px auto;border:8px solid #fff">${c}</div><p class="mut" style="text-align:center">Cobrança de ${v?brl(v):'valor livre'}</p>`}
 function openCopiaCola(){flow('Pix Copia e Cola','Cole o código Pix',`<textarea class="inp" rows="3" placeholder="00020126..."></textarea>${moneyInput('ccv')}`,'Pagar',()=>{const v=val('ccv');if(!v){toast('Informe o valor');return}return{desc:'Pix Copia e Cola',amount:v,name:'Pix enviado • Copia e Cola',ic:'📋',v:-v,okTitle:'Pix enviado!'}})}
-function openInvest(){flow('Investir','CDB Visão 110% CDI • liquidez diária',moneyInput('iv'),'Investir',()=>{const v=val('iv');if(!v){toast('Informe o valor');return}return{desc:'Aplicação CDB Visão',amount:v,okTitle:'Aplicação realizada',apply:()=>{LS.set('vb_inv',LS.get('vb_inv',0)+v);const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:'Aplicação • CDB Visão',ic:'📈',v:-v});LS.set('vb_mine',m)}}})}
+function openInvest(){flow('Investir','CDB Vision 110% CDI • liquidez diária',moneyInput('iv'),'Investir',()=>{const v=val('iv');if(!v){toast('Informe o valor');return}return{desc:'Aplicação CDB Vision',amount:v,okTitle:'Aplicação realizada',apply:()=>{LS.set('vb_inv',LS.get('vb_inv',0)+v);const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:'Aplicação • CDB Vision',ic:'📈',v:-v});LS.set('vb_mine',m)}}})}
 function payFatura(){
   const f=parseFloat($('cFat').textContent.replace(/[^\d,]/g,'').replace(',','.'))||0;
   if(!f){toast('Fatura já paga 🎉');return}
@@ -631,7 +631,7 @@ const standalone=()=>window.navigator.standalone===true||(window.matchMedia&&mat
 function pushOk(){return 'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window}
 function openAvisos(){
   if(!pushOk()||!standalone()){
-    openM('<h3>Instale o app primeiro</h3><p class="mut">Abra esta página no Safari, toque em Compartilhar e em "Adicionar à Tela de Início". Depois abra o app pelo ícone Visão e toque aqui de novo.</p><button class="btn" onclick="closeM()">Entendi</button>');return}
+    openM('<h3>Instale o app primeiro</h3><p class="mut">Abra esta página no Safari, toque em Compartilhar e em "Adicionar à Tela de Início". Depois abra o app pelo ícone Vision e toque aqui de novo.</p><button class="btn" onclick="closeM()">Entendi</button>');return}
   openM('<h3>Avisos de transações</h3><p class="mut">Receba cada movimentação na tela do iPhone, com a logo do app.</p><button class="btn" id="enb">Ativar avisos</button><button class="btn g" onclick="closeM()">Agora não</button>');
   $('enb').onclick=async()=>{
     try{

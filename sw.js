@@ -1,4 +1,4 @@
-const CACHE='visao-v1';
+const CACHE='visao-v2';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',e=>{
@@ -7,8 +7,8 @@ self.addEventListener('fetch',e=>{
 });
 self.addEventListener('push',e=>{
   let d={};
-  try{d=e.data.json()}catch(_){d={title:'Visão',body:e.data?e.data.text():''}}
-  e.waitUntil(self.registration.showNotification(d.title||'Visão',{body:d.body||'',icon:'icon-192.png',badge:'icon-192.png',tag:d.tag||undefined,data:{url:'./'}}));
+  try{d=e.data.json()}catch(_){d={title:'Vision Bank',body:e.data?e.data.text():''}}
+  e.waitUntil(self.registration.showNotification(d.title||'Vision Bank',{body:d.body||'',icon:'icon-192.png',badge:'icon-192.png',tag:d.tag||undefined,data:{url:'./'}}));
 });
 self.addEventListener('notificationclick',e=>{
   e.notification.close();
