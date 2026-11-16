@@ -209,6 +209,26 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
 .sw{width:50px;height:30px;border-radius:15px;background:#3a3a3a;position:relative;flex-shrink:0;cursor:pointer;transition:.2s}
 .sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
 .sw.on{background:var(--acc)}.sw.on i{left:23px}
+
+/* suavidade: transições, indicador deslizante e degradês discretos */
+nav{position:fixed}
+nav .ind{position:absolute;top:-1px;left:0;height:3px;border-radius:0 0 3px 3px;background:var(--acc);transition:transform .4s cubic-bezier(.3,.9,.3,1),width .3s;pointer-events:none;z-index:2}
+nav button.on:before{display:none!important}
+nav button{transition:color .25s,transform .15s}
+nav button svg{transition:fill .3s,color .25s,transform .25s}
+nav button:active{transform:scale(.92)}
+nav button.on svg{animation:pop .45s cubic-bezier(.3,1.7,.5,1)}
+@keyframes pop{0%{transform:scale(.75)}100%{transform:scale(1)}}
+nav:before{content:"";position:absolute;left:0;right:0;bottom:100%;height:34px;background:linear-gradient(180deg,rgba(18,18,18,0),var(--bg));pointer-events:none}
+.screen.on>*{animation:up .5s both cubic-bezier(.2,.8,.2,1)}
+.screen.on>*:nth-child(1){animation-delay:0s}.screen.on>*:nth-child(2){animation-delay:.04s}.screen.on>*:nth-child(3){animation-delay:.08s}.screen.on>*:nth-child(4){animation-delay:.12s}.screen.on>*:nth-child(5){animation-delay:.16s}.screen.on>*:nth-child(6){animation-delay:.2s}.screen.on>*:nth-child(n+7){animation-delay:.24s}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+body:before{content:"";position:fixed;top:0;left:0;right:0;height:260px;background:radial-gradient(120% 100% at 50% 0%,rgba(47,211,154,.13),rgba(18,18,18,0) 70%);pointer-events:none;z-index:0}
+.app{position:relative;z-index:1}
+.promo{background:linear-gradient(135deg,#0d1a15 0%,#12372b 100%)}
+.cc.deb{background:linear-gradient(135deg,#2fd39a,#1fa87b)}
+button,.tile,.orow,.promo,.mini,.feed{transition:transform .15s,background .25s}
+button:active,.tile:active,.orow:active,.promo:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -386,7 +406,7 @@ nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
 </section>
 </div>
 
-<nav>
+<nav><i class="ind"></i>
   <button class="on" data-s="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
   <button data-s="invest" onclick="go('invest')"><svg viewBox="0 0 24 24"><path d="M3 20V9l6 4 5-7 7 5v9z"/></svg>Invest</button>
   <button data-s="ext" onclick="go('ext')"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2zM9 8h6M9 12h6"/></svg>Extrato</button>
@@ -569,7 +589,10 @@ function go(s){
   $('s-'+s).classList.add('on');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   window.scrollTo(0,0);
+  moveInd();
 }
+function moveInd(){const n=document.querySelector('nav'),b=n&&n.querySelector('button.on'),i=n&&n.querySelector('.ind');if(!b||!i)return;i.style.width=b.offsetWidth+'px';i.style.transform='translateX('+b.offsetLeft+'px)'}
+addEventListener('resize',moveInd);addEventListener('load',()=>{moveInd();setTimeout(moveInd,300)});
 $('fChips').addEventListener('click',e=>{if(e.target.dataset.f){filt=e.target.dataset.f;document.querySelectorAll('#fChips button').forEach(b=>b.classList.toggle('on',b===e.target));renderExt()}});
 function toggleHide(){hidden=!hidden;LS.set('vb_hide',hidden);render()}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),2200)}
