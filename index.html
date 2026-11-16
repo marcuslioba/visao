@@ -156,6 +156,28 @@ nav button.on{color:var(--txt);font-weight:600}
 .mini b{font-size:16px;font-weight:600}
 .mini .pc{font-size:22px;font-weight:600;color:var(--acc)}
 .mbar{margin:10px 0 0}
+
+/* ajustes de layout (comparação com app real) */
+.saldo{padding:26px 18px 4px}
+.saldo small{font-size:15px;vertical-align:middle}
+.saldo b{font-size:28px;font-weight:600}
+.dv{display:none}
+.eyeb{display:inline-flex;vertical-align:middle;padding:4px 8px;margin-left:4px}
+.eyeb svg{width:20px;height:20px}
+.pills{padding:14px 18px;gap:8px}
+.pills button{padding:9px 16px;font-size:14px;gap:6px}
+.pills svg{width:16px;height:16px}
+.hs{gap:8px}
+.tile{min-width:104px;height:92px;padding:12px;font-size:13px;border-radius:14px}
+.tile svg{width:22px;height:22px}
+.grid .tile{min-width:0;height:100px;font-size:14px;padding:14px}
+.promo{margin:16px 18px 0;background:#12372b;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.promo small{display:block;color:#5ff0bd;font-size:12px;font-weight:600;margin-bottom:4px}
+.promo b{display:block;font-size:17px;font-weight:600;line-height:1.25}
+.promo span{display:block;color:#a9d9c7;font-size:13px;margin-top:4px}
+.promo button{background:var(--acc);color:#04241a;border:0;border-radius:20px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap}
+nav button.on:before{content:"";display:block;position:absolute;top:-10px;left:12%;width:76%;height:3px;border-radius:0 0 3px 3px;background:var(--acc)}
+nav button.on svg{fill:rgba(47,211,154,.28);color:var(--acc)}
 </style>
 </head>
 <body>
@@ -166,13 +188,12 @@ nav button.on{color:var(--txt);font-weight:600}
   <div class="topbar">
     <button class="circle" onclick="go('prof')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
     <div class="tr">
-      <button class="eyeb" onclick="toggleHide()" id="eyeI"></button>
       <div class="seg"><button class="on" onclick="toast('Conta PF')">PF</button><button onclick="toast('Conta Global em US$')">US$</button></div>
     </div>
   </div>
   <div class="search" onclick="openPix()"><span class="spark">✦</span>Faça um Pix</div>
   <div class="saldo">
-    <small>Saldo</small>
+    <small>Saldo</small><button class="eyeb" onclick="toggleHide()" id="eyeI"></button>
     <div class="r" onclick="go('ext')"><b id="bal"></b><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
     <div class="dv" id="dayvar"></div>
   </div>
@@ -189,6 +210,11 @@ nav button.on{color:var(--txt);font-weight:600}
     <button class="tile" onclick="openRecarga()"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Recarga</button>
     <button class="tile" onclick="openCobrar()"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3M21 14v7h-4"/></svg>Cobrar</button>
     <button class="tile" onclick="toast('Seguro de vida ativo ✓')"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Seguros</button>
+  </div>
+
+  <div class="promo" onclick="toast('Cartão Black sem anuidade para você')">
+    <div><small>Oferta para você</small><b>Cartão Black sem anuidade</b><span>Mais pontos Loop em todas as compras</span></div>
+    <button type="button">Saber mais</button>
   </div>
 
   <div class="mini" id="pushCard" onclick="openAvisos()" style="display:none">
