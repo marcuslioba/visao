@@ -99,9 +99,18 @@ function buildHistory(){
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const WIN={janela1:[7,11],janela2:[11,15],janela3:[15,19],janela4:[19,24]};
 function msg(x){
-  const out=x.v<0;
-  const kind=x.v>0?'Entrada na conta':(/^(Pix|TED|Boleto|Pagamento)/.test(x.name)?'Pagamento realizado':'Compra aprovada');
-  return {title:kind,body:x.name+'\n'+(out?'- ':'+ ')+brl(Math.abs(x.v))+'\nSaldo '+brl(x.bal),tag:String(x.d)};
+  const out=x.v<0, val=brl(Math.abs(x.v));
+  const parts=x.name.split(/\s*[\u2022\u00b7]\s*/); const who=parts.length>1?parts.slice(1).join(' ').trim():x.name;
+  const kindName=parts[0];
+  let title,body;
+  if(!out){
+    if(/^Pix/i.test(kindName)){title='Pix recebido';body='Voc\u00ea recebeu '+val+' de '+who+'.'}
+    else if(/^Rendimento/i.test(x.name)){title='Rendimento creditado';body='Seu saldo rendeu '+val+' hoje.'}
+    else{title='Dinheiro na conta';body=x.name+': voc\u00ea recebeu '+val+'.'}
+  }else if(/^Pix/i.test(kindName)){title='Pix enviado';body='Voc\u00ea enviou '+val+' para '+who+'.'}
+  else if(/^(TED|Boleto|Pagamento)/i.test(kindName)){title='Pagamento realizado';body=val+' pago em '+who+'.'}
+  else{title='Compra aprovada';body='Compra de '+val+' aprovada em '+x.name+'.'}
+  return {title,body,tag:String(x.d)};
 }
 async function send(webpush,sub,x){
   const m=msg(x);
