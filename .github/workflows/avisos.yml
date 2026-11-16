@@ -2,10 +2,8 @@ name: Avisos Visão
 
 on:
   schedule:
-    - cron: '30 9 * * *'    # 06:30 em Fortaleza: avisos das 07h às 11h
-    - cron: '30 13 * * *'   # 10:30: avisos das 11h às 15h
-    - cron: '30 17 * * *'   # 14:30: avisos das 15h às 19h
-    - cron: '30 21 * * *'   # 18:30: avisos das 19h às 24h
+    # a cada ~10 min entre 07h e 22h (Fortaleza); cada rodada manda o que ocorreu nos ultimos 25 min
+    - cron: '3,13,23,33,43,53 0-1,10-23 * * *'
   workflow_dispatch:
     inputs:
       janela:
@@ -14,6 +12,7 @@ on:
         default: teste
         options:
           - teste
+          - agora
           - resto
           - janela1
           - janela2
@@ -23,7 +22,7 @@ on:
 jobs:
   avisos:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
+    timeout-minutes: 15
     env:
       TZ: America/Fortaleza
       VAPID_PUBLIC: BM7AX7EsWPCX4g-lb_LRWtMCGn4LfomC1RB3MmaBbzOBIFfAMUKUQExAneuPxFrKc6l0fV2M62FhjKymwchKPfk
@@ -39,14 +38,7 @@ jobs:
       - name: Definir janela
         run: |
           J="${{ inputs.janela }}"
-          if [ -z "$J" ]; then
-            case "${{ github.event.schedule }}" in
-              "30 9 * * *") J=janela1;;
-              "30 13 * * *") J=janela2;;
-              "30 17 * * *") J=janela3;;
-              *) J=janela4;;
-            esac
-          fi
+          if [ -z "$J" ]; then J=agora; fi
           echo "JANELA=$J" >> "$GITHUB_ENV"
       - name: Enviar avisos
         run: node push.js

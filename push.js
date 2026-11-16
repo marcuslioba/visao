@@ -144,7 +144,8 @@ async function send(webpush,sub,x){
   const ok=txs.filter(x=>x.name.indexOf('Rendimento')<0).sort((a,b)=>a.d-b.d);
   if(J==='teste'){await send(webpush,sub,ok[ok.length-1]);return}
   let list;
-  if(J==='resto')list=ok.filter(x=>x.d>REAL_NOW);
+  if(J==='agora')list=ok.filter(x=>x.d<=REAL_NOW&&x.d>REAL_NOW-25*60000);
+  else if(J==='resto')list=ok.filter(x=>x.d>REAL_NOW);
   else if(WIN[J]){const t0=new RD(REAL_NOW);t0.setHours(0,0,0,0);list=ok.filter(x=>{if(x.d<t0.getTime())return false;const h=new RD(x.d).getHours();return h>=WIN[J][0]&&h<WIN[J][1]})}
   else throw new Error('janela desconhecida: '+J);
   console.log('janela',J,'->',list.length,'avisos');
