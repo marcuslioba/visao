@@ -110,7 +110,7 @@ function msg(x){
   }else if(/^Pix/i.test(kindName)){title='Pix enviado';body='Voc\u00ea enviou '+val+' para '+who+'.'}
   else if(/^(TED|Boleto|Pagamento)/i.test(kindName)){title='Pagamento realizado';body=val+' pago em '+who+'.'}
   else{title='Compra aprovada';body='Compra de '+val+' aprovada em '+x.name+'.'}
-  return {title,body,tag:String(x.d)};
+  return {title,body:body+'\nSaldo '+brl(x.bal),tag:String(x.d)};
 }
 async function send(webpush,sub,x){
   const m=msg(x);
