@@ -44,6 +44,7 @@ const IN_SMALL=[
 ];
 const IN_BIG=[
  ['TED recebida • Resolve Gestão de Tráfego','🚀',15000,60000],['Dividendos • ITSA4','📈',3000,14000],
+ ['Lucro • Padaria Santo Trigo','🥖',8000,35000],['Pró-labore • Padaria Santo Trigo','🥖',6000,12000],
  ['Pix recebido • Contrato de gestão','💼',6000,25000],['Resgate CDB','🏦',10000,50000],
  ['Aluguel recebido','🏢',4500,9000],['Bonificação anual','🏆',20000,70000]
 ];
@@ -105,6 +106,8 @@ function msg(x){
   let title,body;
   if(!out){
     if(/^Pix/i.test(kindName)){title='Pix recebido';body='Voc\u00ea recebeu '+val+' de '+who+'.'}
+    else if(/^Lucro/i.test(kindName)){title='Lucro recebido';body='Distribui\u00e7\u00e3o de lucros: voc\u00ea recebeu '+val+' da '+who+'.'}
+    else if(/^Pr\u00f3-labore/i.test(kindName)){title='Pr\u00f3-labore recebido';body='Seu pr\u00f3-labore de '+val+' da '+who+' caiu na conta.'}
     else if(/^Rendimento/i.test(x.name)){title='Rendimento creditado';body='Seu saldo rendeu '+val+' hoje.'}
     else{title='Dinheiro na conta';body=x.name+': voc\u00ea recebeu '+val+'.'}
   }else if(/^Pix/i.test(kindName)){title='Pix enviado';body='Voc\u00ea enviou '+val+' para '+who+'.'}
