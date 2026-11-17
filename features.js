@@ -307,8 +307,8 @@ let lkPin='',lkBusy=false,hiddenAt=0;
 function lkDraw(){$('lkDots').innerHTML=[0,1,2,3].map(i=>`<span class="${i<lkPin.length?'f':''}"></span>`).join('')}
 function unlock(){const l=$('lock');l.classList.add('ok');setTimeout(()=>{l.classList.remove('on','ok','scan');document.body.classList.remove('locked')},380)}
 function lockFace(){
-  const l=$('lock');lkBusy=true;l.classList.remove('pin');l.classList.add('scan');$('lkMsg').textContent='Olhe para o iPhone';
-  setTimeout(()=>{l.classList.add('done');$('lkMsg').textContent='Face ID reconhecido';setTimeout(()=>{l.classList.remove('done');lkBusy=false;unlock()},520)},1250);
+  const l=$('lock');lkBusy=true;l.classList.remove('pin');l.classList.add('scan');$('lkMsg').textContent='Face ID';
+  setTimeout(()=>{l.classList.add('done');$('lkMsg').textContent='';setTimeout(()=>{l.classList.remove('done');lkBusy=false;unlock()},900)},1500);
 }
 function lockPin(){lkPin='';lkDraw();const l=$('lock');l.classList.remove('scan');l.classList.add('pin');$('lkMsg').textContent='Digite seu PIN'}
 function lockForgot(){LS.set('vb_pin','1234');lkPin='';lkDraw();toast('PIN redefinido para 1234')}

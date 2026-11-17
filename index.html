@@ -325,11 +325,28 @@ body.locked{overflow:hidden}
 .dn text{stroke:none!important;stroke-width:0}
 .dn{flex-direction:column;align-items:center}.lg{width:100%}
 #resPane svg.ev path{stroke-width:2}
+
+/* Face ID no estilo iOS: cantos, rosto desenhando, depois círculo e check brancos */
+.face svg{stroke:#fff;opacity:1;stroke-width:2.2}
+.face .ff path,.face .ck1,.face .ck2{stroke-dasharray:1;stroke-dashoffset:1}
+#lock.scan .face svg{animation:none}
+#lock.scan .fc{animation:fcp 1.1s ease-in-out infinite}
+#lock.scan .ff path{animation:fdr .5s ease-out forwards}
+#lock.scan .ff path:nth-child(2){animation-delay:.08s}#lock.scan .ff path:nth-child(3){animation-delay:.2s}#lock.scan .ff path:nth-child(4){animation-delay:.35s}
+#lock.scan .ff{animation:fblink 1.2s .5s ease-in-out}
+@keyframes fcp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.94)}}
+.face .fc{transform-origin:32px 32px}
+@keyframes fdr{to{stroke-dashoffset:0}}
+@keyframes fblink{0%,100%{opacity:1}50%{opacity:.35}}
+#lock.done .face svg{stroke:#fff;filter:none}
+#lock.done .fc,#lock.done .ff{opacity:0;transition:opacity .22s}
+#lock.done .ck1{animation:fdr .38s ease-out forwards}
+#lock.done .ck2{animation:fdr .3s .3s ease-out forwards}
 </style>
 </head>
 <body>
 <div id="splash"><img src="logo.svg" alt=""><b>Vision Bank</b></div>
-<div id="lock"><div class="lk-top"><img src="logo.svg" alt=""><b>Vision Bank</b><p id="lkMsg">Olá, Marcus</p></div><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><path class="fe" d="M24 26v4M40 26v4M32 28v8h-3M24 44c4 4 12 4 16 0"/></svg></div><div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div></div>
+<div id="lock"><div class="lk-top"><img src="logo.svg" alt=""><b>Vision Bank</b><p id="lkMsg">Olá, Marcus</p></div><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path class="fc" d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><g class="ff"><path d="M24 25v5" pathLength="1"/><path d="M40 25v5" pathLength="1"/><path d="M32 26v9a2 2 0 0 1-2 2h-1" pathLength="1"/><path d="M23.5 43c5 5 12 5 17 0" pathLength="1"/></g><circle class="ck1" cx="32" cy="32" r="21" pathLength="1"/><path class="ck2" d="M22 33l7 7 13-14" pathLength="1"/></svg></div><div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div></div>
 <div id="fs"></div>
 <div class="ptr" id="ptr"><i></i></div>
 <div class="app">
