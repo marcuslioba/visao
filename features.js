@@ -307,22 +307,23 @@ let lkPin='',lkBusy=false,hiddenAt=0;
 function lkDraw(){$('lkDots').innerHTML=[0,1,2,3].map(i=>`<span class="${i<lkPin.length?'f':''}"></span>`).join('')}
 function unlock(){const l=$('lock');l.classList.add('ok');setTimeout(()=>{l.classList.remove('on','ok','scan');document.body.classList.remove('locked')},380)}
 function lockFace(){
-  const l=$('lock');lkBusy=true;l.classList.remove('pin','orbit','done');l.classList.add('scan');$('lkMsg').textContent='Face ID';
-  setTimeout(()=>l.classList.add('orbit'),650);
-  setTimeout(()=>{l.classList.remove('orbit');l.classList.add('done');$('lkMsg').textContent=''},1350);
-  setTimeout(()=>{l.classList.remove('done','orbit');lkBusy=false;unlock()},2250);
+  const l=$('lock');lkBusy=true;l.classList.remove('pin','orbit','done','name');l.classList.add('scan');
+  setTimeout(()=>l.classList.add('orbit'),500);
+  setTimeout(()=>{l.classList.remove('orbit');l.classList.add('done')},1000);
+  setTimeout(()=>l.classList.add('name'),1900);
+  setTimeout(()=>{l.classList.remove('done','orbit','name');lkBusy=false;unlock()},2350);
 }
-function lockPin(){lkPin='';lkDraw();const l=$('lock');l.classList.remove('scan');l.classList.add('pin');$('lkMsg').textContent='Digite seu PIN'}
+function lockPin(){lkPin='';lkDraw();const l=$('lock');l.classList.remove('scan','orbit','done','name');l.classList.add('pin')}
 function lockForgot(){LS.set('vb_pin','1234');lkPin='';lkDraw();toast('PIN redefinido para 1234')}
-function showLock(){
+function showLock(first){
   if(!LS.get('vb_lock',true))return;
-  document.body.classList.add('locked');const l=$('lock');l.classList.add('on');l.classList.remove('done','ok');
-  $('lkMsg').textContent='Olá, '+NAME;
-  if(LS.get('vb_face',true))setTimeout(lockFace,350);else lockPin();
+  document.body.classList.add('locked');const l=$('lock');l.classList.add('on');l.classList.remove('done','ok','name','orbit','pin','scan');
+  const full=LS.get('vb_full','Marcus Lioba');$('lkNm').textContent=full;$('lkAv').textContent=full.split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  const go=()=>{l.classList.remove('skel');if(LS.get('vb_face',true))setTimeout(lockFace,250);else lockPin()};
+  if(first){l.classList.add('skel');setTimeout(go,500)}else go();
 }
 (function(){
   const kp=$('lkKp');kp.innerHTML=[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-k="${k}">${k}</button>`).join('');
-  $('lkFace').insertAdjacentHTML('afterend','<button id="lkUsePin" class="lkb" onclick="lockPin()">Usar PIN</button>');
   kp.onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;if(k==='⌫')lkPin=lkPin.slice(0,-1);else if(k!==''&&lkPin.length<4)lkPin+=k;lkDraw();
     if(lkPin.length===4){if(lkPin===getPin())setTimeout(unlock,120);else{$('lkDots').classList.remove('shake');void $('lkDots').offsetWidth;$('lkDots').classList.add('shake');setTimeout(()=>{lkPin='';lkDraw()},350)}}};
 })();
@@ -345,4 +346,4 @@ document.addEventListener('visibilitychange',()=>{
 })();
 /* ---------- partida ---------- */
 render();setInterval(render,60000);
-setTimeout(()=>{$('splash').classList.add('out');setTimeout(()=>$('splash').remove(),500);showLock()},1150);
+setTimeout(()=>{$('splash').classList.add('out');setTimeout(()=>$('splash').remove(),500);showLock(true)},1150);

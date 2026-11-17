@@ -355,11 +355,55 @@ body.locked{overflow:hidden}
 #lock.done .orb{opacity:0;transition:opacity .12s}
 #lock.done .ck1{stroke-dashoffset:0;animation:none}
 #lock.done .ck2{animation:fdr .32s .12s ease-out forwards}
+
+/* Entrada no layout do app de referência */
+#splash{background:#141414}
+#lock{background:#141414;display:none;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:calc(10px + env(safe-area-inset-top)) 18px calc(26px + env(safe-area-inset-bottom))}
+#lock.on{display:flex}
+.lkbar{display:flex;align-items:center;justify-content:space-between;height:44px}
+.lkl0{display:flex;align-items:center;gap:8px}.lkl0 img{width:26px;height:26px;border-radius:7px}.lkl0 b{font-size:19px;font-weight:700;letter-spacing:.3px}
+.lkic{display:flex;gap:16px}.lkic svg{width:22px;height:22px;fill:none;stroke:#f2f2f2;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lkmid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:70px}
+.lkav{width:68px;height:68px;border-radius:50%;background:#2a2a2a;display:grid;place-items:center;font-weight:600;font-size:16px;margin-bottom:-10px;position:relative;z-index:1}
+.fcard{width:130px;height:133px;border-radius:12px;background:#2a2a2a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;margin-top:0;transition:opacity .25s}
+.fcard span{font-size:14px;font-weight:500}
+.fcard .face{width:62px;height:62px;margin:0}.fcard .face svg{width:62px;height:62px}
+.lkname{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;transition:opacity .3s;margin-top:150px}
+.lkname em{font-style:normal;background:#0f6b4d;color:#e8fff6;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px}
+.lkname b{font-size:19px;font-weight:600}.lkname small{font-size:13px;color:#cfcfcf}
+.lkspin{width:24px;height:24px;border-radius:50%;border:2px solid transparent;border-top-color:var(--acc);margin-top:14px;animation:rot .8s linear infinite;opacity:0}
+#lock.scan .lkspin,#lock.done .lkspin{opacity:1}
+#lock.name .fcard{opacity:0}#lock.name .lkname{opacity:1}
+#lkMsg{display:none}
+.lkfoot{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));background:none;border:0;color:var(--acc);font-size:16px;font-weight:500;cursor:pointer}
+#lock.pin .fcard,#lock.pin .lkspin,#lock.pin .lkfoot{display:none}
+#lock.pin .lkpad{display:block;width:100%;max-width:340px;margin-top:26px}
+.lkpad{display:none}
+.lksk{display:none;position:absolute;inset:0;background:#141414;z-index:5}
+#lock.skel .lksk{display:block}
+.lksk i{position:absolute;display:block;background:#242424;border-radius:10px;animation:shim2 1s linear infinite}
+.lksk .c{width:68px;height:68px;border-radius:50%;left:calc(50% - 34px);top:calc(50% - 110px)}
+.lksk .b1{width:60px;height:20px;left:calc(50% - 30px);top:calc(50% - 20px)}.lksk .b2{width:96px;height:24px;left:calc(50% - 48px);top:calc(50% + 8px)}.lksk .b3{width:40px;height:14px;left:calc(50% - 20px);top:calc(50% + 40px)}
+.lksk .p1,.lksk .p2{left:18px;right:18px;height:44px;border-radius:24px}.lksk .p1{bottom:calc(76px + env(safe-area-inset-bottom))}.lksk .p2{bottom:calc(24px + env(safe-area-inset-bottom))}
+@keyframes shim2{50%{opacity:.55}}
+#lock .face svg{width:62px;height:62px}
 </style>
 </head>
 <body>
 <div id="splash"><img src="logo.svg" alt=""><b>Vision Bank</b></div>
-<div id="lock"><div class="lk-top"><img src="logo.svg" alt=""><b>Vision Bank</b><p id="lkMsg">Olá, Marcus</p></div><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path class="fc" d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><g class="ff"><path d="M24 25v5" pathLength="1"/><path d="M40 25v5" pathLength="1"/><path d="M32 26v9a2 2 0 0 1-2 2h-1" pathLength="1"/><path d="M23.5 43c5 5 12 5 17 0" pathLength="1"/></g><g class="orb"><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#38bdf8"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#3b82f6" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#22d3ee" transform="rotate(120 32 32)"/></g><circle class="ck1" cx="32" cy="32" r="21" pathLength="1"/><path class="ck2" d="M22 33l7 7 13-14" pathLength="1"/></svg></div><div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div></div>
+<div id="lock">
+  <div class="lkbar"><span class="lkl0"><img src="logo.svg" alt=""><b>Vision Bank</b></span><span class="lkic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><rect x="9.5" y="10.5" width="5" height="4" rx="1"/></svg><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></span></div>
+  <div class="lkmid">
+    <div class="lkav" id="lkAv">ML</div>
+    <div class="fcard" id="lkCard"><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path class="fc" d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><g class="ff"><path d="M24 25v5" pathLength="1"/><path d="M40 25v5" pathLength="1"/><path d="M32 26v9a2 2 0 0 1-2 2h-1" pathLength="1"/><path d="M23.5 43c5 5 12 5 17 0" pathLength="1"/></g><g class="orb"><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#38bdf8"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#3b82f6" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#22d3ee" transform="rotate(120 32 32)"/></g><circle class="ck1" cx="32" cy="32" r="21" pathLength="1"/><path class="ck2" d="M22 33l7 7 13-14" pathLength="1"/></svg></div><span>Face ID</span></div>
+    <div class="lkname" id="lkName"><em>Private</em><b id="lkNm">Marcus Lioba</b><small>Ag 0001 • CC ***.193-7</small></div>
+    <div class="lkspin" id="lkSpin"></div>
+    <p id="lkMsg"></p>
+    <div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div>
+  </div>
+  <button class="lkfoot" id="lkUsePin" onclick="lockPin()">Usar PIN</button>
+  <div class="lksk"><i class="c"></i><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="p1"></i><i class="p2"></i></div>
+</div>
 <div id="fs"></div>
 <div class="ptr" id="ptr"><i></i></div>
 <div class="app">

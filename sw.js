@@ -1,4 +1,4 @@
-const CACHE='visao-v12';
+const CACHE='visao-v13';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',e=>{
