@@ -342,11 +342,24 @@ body.locked{overflow:hidden}
 #lock.done .fc,#lock.done .ff{opacity:0;transition:opacity .22s}
 #lock.done .ck1{animation:fdr .38s ease-out forwards}
 #lock.done .ck2{animation:fdr .3s .3s ease-out forwards}
+
+/* Face ID (igual ao vídeo de referência): rosto -> órbitas azuis girando -> círculo -> check */
+.face .ff path{stroke-dashoffset:0!important;animation:none!important}
+#lock.scan .ff{animation:none}
+#lock.scan .fc{animation:none}
+.face .orb{opacity:0;transform-origin:32px 32px;fill:none;stroke-width:2.2;filter:drop-shadow(0 0 3px rgba(56,189,248,.8))}
+.face .orb ellipse{fill:none}
+#lock.orbit .fc,#lock.orbit .ff{opacity:0;transition:opacity .25s}
+#lock.orbit .orb{opacity:1;animation:orbs .6s linear infinite}
+@keyframes orbs{from{transform:rotate(0) scale(.92)}50%{transform:rotate(180deg) scale(1.04)}to{transform:rotate(360deg) scale(.92)}}
+#lock.done .orb{opacity:0;transition:opacity .12s}
+#lock.done .ck1{stroke-dashoffset:0;animation:none}
+#lock.done .ck2{animation:fdr .32s .12s ease-out forwards}
 </style>
 </head>
 <body>
 <div id="splash"><img src="logo.svg" alt=""><b>Vision Bank</b></div>
-<div id="lock"><div class="lk-top"><img src="logo.svg" alt=""><b>Vision Bank</b><p id="lkMsg">Olá, Marcus</p></div><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path class="fc" d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><g class="ff"><path d="M24 25v5" pathLength="1"/><path d="M40 25v5" pathLength="1"/><path d="M32 26v9a2 2 0 0 1-2 2h-1" pathLength="1"/><path d="M23.5 43c5 5 12 5 17 0" pathLength="1"/></g><circle class="ck1" cx="32" cy="32" r="21" pathLength="1"/><path class="ck2" d="M22 33l7 7 13-14" pathLength="1"/></svg></div><div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div></div>
+<div id="lock"><div class="lk-top"><img src="logo.svg" alt=""><b>Vision Bank</b><p id="lkMsg">Olá, Marcus</p></div><div id="lkFace" class="face"><svg viewBox="0 0 64 64"><path class="fc" d="M10 22V14a4 4 0 0 1 4-4h8M42 10h8a4 4 0 0 1 4 4v8M54 42v8a4 4 0 0 1-4 4h-8M22 54h-8a4 4 0 0 1-4-4v-8"/><g class="ff"><path d="M24 25v5" pathLength="1"/><path d="M40 25v5" pathLength="1"/><path d="M32 26v9a2 2 0 0 1-2 2h-1" pathLength="1"/><path d="M23.5 43c5 5 12 5 17 0" pathLength="1"/></g><g class="orb"><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#38bdf8"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#3b82f6" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="21" ry="8" stroke="#22d3ee" transform="rotate(120 32 32)"/></g><circle class="ck1" cx="32" cy="32" r="21" pathLength="1"/><path class="ck2" d="M22 33l7 7 13-14" pathLength="1"/></svg></div><div id="lkPad" class="lkpad"><div class="pin" id="lkDots"></div><div class="kp" id="lkKp"></div><div class="lkl"><button onclick="lockFace()">Usar Face ID</button><button onclick="lockForgot()">Esqueci meu PIN</button></div></div></div>
 <div id="fs"></div>
 <div class="ptr" id="ptr"><i></i></div>
 <div class="app">
