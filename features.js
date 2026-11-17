@@ -43,7 +43,7 @@ function openReceipt(k){
     rows.push(['Saldo após',brl(x.bal)]);
   }
   rows.push(['Categoria',x.c||'Outros'],['ID da transação',id]);
-  openM(`<div class="rc"><div class="rcs ${out?'':'in'}">${x.card?IC_CARD:(out?IC_OUT:IC_IN)}</div><small>${m.title}</small><b>${out?'-':''}${brl(Math.abs(x.v))}</b></div><div class="rcl">${rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div><button class="btn" onclick="shareRc('${k}')">Compartilhar comprovante</button><button class="btn g" onclick="closeM()">Fechar</button>`);
+  openM(`<div class="rc"><div class="rcs ${out?'':'in'}">${x.card?IC_CARD:(out?IC_OUT:IC_IN)}</div><small>${m.title}</small><b>${out?'-':''}${brl(Math.abs(x.v))}</b></div><div class="rcl">${rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div><button class="btn" onclick="shareRc('${k}')">Compartilhar comprovante</button><button class="btn g" onclick="saveRc('${k}')">Salvar nos meus comprovantes</button><button class="btn g" onclick="closeM()">Fechar</button>`);
 }
 function shareRc(k){
   const x=TXMAP[k];if(!x)return;const m=notifMsg(x);const t='Vision Bank • '+m.title+'\n'+brl(Math.abs(x.v))+'\n'+new Date(x.d).toLocaleString('pt-BR')+'\n'+x.name;
@@ -190,13 +190,13 @@ const INV=[['CDB Vision 110% CDI','Liquidez diária',412000,.00002],['Tesouro IP
 let invPrev=[];
 function renderInvest(){
   const r=mulberry32(hashStr('inv'+ymd(new Date())));const t=Date.now();
-  const extra=LS.get('vb_inv',0);let tot=0,rend=0;const cur=[];
+  const invx=LS.get('vb_invx',[0,0,0,0,0]);const extra=LS.get('vb_inv',0);let tot=0,rend=0;const cur=[];
   const html=INV.map((b,i)=>{
     const dayDrift=(r()*0.012-0.002);
     const live=b[3]*(Math.sin(t/7000+i*1.7)+.5*Math.sin(t/2900+i*3.1));
-    const base=b[2]+(i===0?extra:0);const v=base*(1+dayDrift+live);const rd=v-base;tot+=v;rend+=rd;cur.push(v);
+    const base=b[2]+(i===0?extra:0)+(invx[i]||0);const v=base*(1+dayDrift+live);const rd=v-base;tot+=v;rend+=rd;cur.push(v);
     const up=invPrev[i]!==undefined&&v>invPrev[i]?' up':(invPrev[i]!==undefined&&v<invPrev[i]?' dn2':'');
-    return `<div class="inv"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b class="lv${up}">${hidden?'•••':brl(v)}</b><div class="pos${rd<0?' neg':''}">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
+    return `<div class="inv" onclick="openAsset(${i})"><div><b>${b[0]}</b><small>${b[1]}</small></div><div style="text-align:right"><b class="lv${up}">${hidden?'•••':brl(v)}</b><div class="pos${rd<0?' neg':''}">${hidden?'':(rd>=0?'+':'')+brl(rd)}</div></div></div>`}).join('');
   invPrev=cur;
   $('invList').innerHTML=html;
   $('invTot').textContent=hidden?'R$ ••••••':brl(tot);
@@ -223,7 +223,7 @@ function done(r){
   if(r.apply)r.apply();
   else{const m=LS.get('vb_mine',[]);m.push({d:Date.now(),name:r.name,ic:r.ic,v:r.v,c:r.c||'Transferências',m:r.m||'pix',bank:r.bank,doc:r.doc});LS.set('vb_mine',m)}
   render();
-  openM(`<div class="ok"><div class="ck"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h3>${r.okTitle||'Operação realizada'}</h3><p class="mut" style="margin:6px 0 18px">${r.desc}<br><b style="font-size:24px;color:var(--txt)">${brl(r.amount)}</b><br>${new Date().toLocaleString('pt-BR')}</p><button class="btn" onclick="closeM()">Concluir</button></div>`);
+  openM(`<div class="ok"><div class="ck"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h3>${r.okTitle||'Operação realizada'}</h3><p class="mut" style="margin:6px 0 18px">${r.desc}${r.silent?'':'<br><b style="font-size:24px;color:var(--txt)">'+brl(r.amount)+'</b>'}<br>${new Date().toLocaleString('pt-BR')}</p><button class="btn" onclick="closeM()">Concluir</button></div>`);
 }
 /* ---------- Pix completo ---------- */
 let P={};
@@ -345,5 +345,5 @@ document.addEventListener('visibilitychange',()=>{
   });
 })();
 /* ---------- partida ---------- */
-render();setInterval(render,60000);
+render();setInterval(()=>render(),60000);
 setTimeout(()=>{$('splash').classList.add('out');setTimeout(()=>$('splash').remove(),500);showLock(true)},1150);

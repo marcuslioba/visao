@@ -387,6 +387,32 @@ body.locked{overflow:hidden}
 .lksk .p1,.lksk .p2{left:18px;right:18px;height:44px;border-radius:24px}.lksk .p1{bottom:calc(76px + env(safe-area-inset-bottom))}.lksk .p2{bottom:calc(24px + env(safe-area-inset-bottom))}
 @keyframes shim2{50%{opacity:.55}}
 #lock .face svg{width:62px;height:62px}
+
+/* ===== profundidade ===== */
+.mkt{display:flex;gap:8px;margin-bottom:14px}.mk{flex:1;background:var(--card);border-radius:14px;padding:11px 12px}.mk small{display:block;color:var(--mut);font-size:12px}.mk b{display:block;font-size:15px;margin:2px 0}.mk em{font-style:normal;font-size:12px;color:var(--acc)}.mk em.neg{color:var(--red)}
+.inv{cursor:pointer}.inv:active{opacity:.6}
+.qrb{background:#fff;border-radius:16px;padding:14px;width:210px;margin:16px auto}.qrb svg{display:block;width:100%;height:auto}
+.stmt{background:#fff;color:#111;border-radius:12px;padding:16px}.stmt table{width:100%;border-collapse:collapse;font-size:12px}.stmt td{padding:5px 4px;border-bottom:1px solid #eee;vertical-align:top}
+.hm{display:flex;align-items:center;gap:12px;margin:12px 18px 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;cursor:pointer}.hm .ti{width:40px;height:40px;flex:none;font-size:20px}.hm div{flex:1;min-width:0}.hm b{display:block;font-size:15px}.hm small{color:var(--mut);font-size:13px}.hm button{background:none;border:0;color:var(--mut);font-size:16px;padding:6px}
+#net{position:fixed;top:0;left:0;right:0;z-index:250;background:#b3261e;color:#fff;text-align:center;font-size:13px;padding:calc(6px + env(safe-area-inset-top)) 10px 6px;transform:translateY(-120%);transition:transform .3s}#net.on{transform:none}
+.lb .sw{margin-left:auto}
+@media print{body>*:not(#fs){display:none!important}body{background:#fff!important}#fs{position:static;display:block!important;background:#fff;animation:none}.fsh,#fs .chips,#fs .btn{display:none!important}.fsb{overflow:visible;padding:0}.stmt{border-radius:0}body:before,body:after{display:none}}
+/* modo claro */
+body.light{--bg:#f3f4f6;--card:#ffffff;--card2:#eceef1;--txt:#15171c;--mut:#6b7280;--line:#e2e5ea;--pill:#d6f5e9;--pillt:#0a7a56;--acc:#12a477}
+body.light:before{background:radial-gradient(135% 100% at 50% 0%,rgba(47,211,154,.18),rgba(47,211,154,0) 70%)}body.light:after{display:none}
+body.light .sheet,body.light #fs{background:var(--bg)}body.light .sheet{background:#fff}
+body.light nav{background:rgba(255,255,255,.94);border-top-color:var(--line)}body.light nav:before{background:linear-gradient(180deg,rgba(243,244,246,0),var(--bg))}
+body.light .promo{background:linear-gradient(135deg,#e6faf1,#c8efdf)}body.light .promo small{color:#0a7a56}body.light .promo span{color:#3d6b5b}body.light .promo b{color:#10241d}
+body.light .btn,body.light .promo button{background:linear-gradient(135deg,rgba(18,164,119,.14),rgba(18,164,119,.05));color:#0a7a56;border-color:rgba(18,164,119,.45)}body.light .btn.g{background:var(--card2);color:var(--txt)}
+body.light .tile,body.light .mini,body.light .feed,body.light .box,body.light .search,body.light .circle,body.light .seg,body.light .pills button{box-shadow:0 1px 2px rgba(0,0,0,.04)}
+body.light .pills button{background:#d6f5e9;color:#0a7a56}
+body.light .inp{background:#fff;border-color:var(--line)}body.light .kp button{background:#eceef1}
+body.light .chips button{background:#fff}body.light .chips button.on{background:#d6f5e9;color:#0a7a56}
+body.light .eyeb,body.light .circle{color:var(--txt)}
+body.light .ti{background:#eceef1}
+body.light .skel i,body.light .skel .sq i{background:linear-gradient(90deg,#e6e8ec 0%,#f1f2f4 45%,#e6e8ec 90%);background-size:220% 100%}
+body.light .cc{background:linear-gradient(135deg,#ffffff,#eef1f4);color:#15171c}body.light .cc.deb{color:#dff7ee}
+body.light .nt .ti,body.light .hm .ti{background:#eceef1}
 </style>
 </head>
 <body>
@@ -414,7 +440,7 @@ body.locked{overflow:hidden}
     <button class="circle" onclick="go('prof')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
     <div class="tr">
       <button class="circle bell" onclick="openBell()"><svg viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/></svg><em id="bellN"></em></button>
-      <div class="seg"><button class="on" onclick="toast('Conta PF')">PF</button><button onclick="toast('Conta Global em US$')">US$</button></div>
+      <div class="seg"><button class="on" onclick="toast('Conta PF')">PF</button><button onclick="openGlobal()">US$</button></div>
     </div>
   </div>
   <div class="search" onclick="openPix()"><span class="spark">✦</span>Faça um Pix</div>
@@ -435,7 +461,7 @@ body.locked{overflow:hidden}
     <button class="tile" onclick="go('invest')"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>Investimentos</button>
     <button class="tile" onclick="openRecarga()"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Recarga</button>
     <button class="tile" onclick="openCobrar()"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3M21 14v7h-4"/></svg>Cobrar</button>
-    <button class="tile" onclick="toast('Seguro de vida ativo ✓')"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Seguros</button>
+    <button class="tile" onclick="openSeguros()"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Seguros</button>
   </div>
 
   <div class="promo" onclick="toast('Cartão Black sem anuidade para você')">
@@ -443,6 +469,7 @@ body.locked{overflow:hidden}
     <button type="button">Saber mais</button>
   </div>
 
+  <div id="homeMsg"></div>
   <div class="mini" id="pushCard" onclick="openAvisos()" style="display:none">
     <div style="flex:1"><small>Avisos no iPhone</small><b>Ativar avisos de transações</b></div>
     <span class="pc" style="font-size:20px">›</span>
@@ -488,8 +515,8 @@ body.locked{overflow:hidden}
     <button class="orow" onclick="openCobrar()"><b>Receber</b><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
   </div>
   <div class="hs pxs">
-    <button onclick="toast('Chave copiada')"><i><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l3 3"/></svg></i>Cadastrar<br>chave Pix</button>
-    <button onclick="toast('Pix Automático em breve')"><i><em class="nv">Novo</em><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></svg></i>Pix<br>Automático</button>
+    <button onclick="openKeys()"><i><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l3 3"/></svg></i>Cadastrar<br>chave Pix</button>
+    <button onclick="openSched()"><i><em class="nv">Novo</em><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></svg></i>Pix<br>Automático</button>
     <button onclick="openCopiaCola()"><i><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></i>Copia<br>e Cola</button>
     <button onclick="toast('Central de ajuda Pix')"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></i>Ajuda<br>Pix</button>
     <button onclick="toast('Contestar Pix')"><i><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5M9 9l6 6M15 9l-6 6"/></svg></i>Contestar<br>Pix</button>
@@ -499,11 +526,11 @@ body.locked{overflow:hidden}
     <button type="button">Aproveitar</button>
   </div>
   <div class="sec" style="padding-top:22px"><div class="orow" style="cursor:default"><div><b>Conheça o Seguro Pix</b><small class="mut" style="display:block;margin-top:4px;font-size:13px">Proteção turbinada para suas transações.</small><a style="color:var(--acc);font-weight:600;font-size:14px;display:block;margin-top:8px" onclick="toast('Seguro Pix')">Saiba mais</a></div><span class="sw" onclick="this.classList.toggle('on')"><i></i></span></div></div>
-  <div class="sec"><h3>Minhas chaves</h3><div class="box">
+  <div class="sec"><h3>Minhas chaves <a onclick="openKeys()">Gerenciar</a></h3><div class="box" id="pxKeys">
     <button class="lb" onclick="toast('Chave copiada')"><span class="ti">📱</span><span>Celular</span><em>(85) 9••••-3968</em></button>
     <button class="lb" onclick="toast('Chave copiada')"><span class="ti">🔑</span><span>Aleatória</span><em>7f3a•••• </em></button>
   </div></div>
-  <div class="sec"><h3>Meus limites</h3><div class="box" style="padding:16px">
+  <div class="sec"><h3>Meus limites <a onclick="openLimits()">Editar</a></h3><div class="box" id="pxLim" style="padding:16px">
     <div class="row"><span class="mut">Diurno</span><b>R$ 200.000,00</b></div>
     <div class="row" style="margin-top:12px"><span class="mut">Noturno</span><b>R$ 50.000,00</b></div>
   </div></div>
@@ -512,7 +539,7 @@ body.locked{overflow:hidden}
 <!-- CARTÃO -->
 <section class="screen" id="s-card">
   <div class="head"><button class="circle" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><h2>Cartões</h2></div>
-  <div class="hl"><h1>Precisando de limite?</h1><button class="pillb" onclick="toast('Seu limite de R$ 300.000,00 já é o máximo disponível')">Acessar opções</button></div>
+  <div class="hl"><h1>Precisando de limite?</h1><button class="pillb" onclick="openLimit()">Acessar opções</button></div>
   <div class="hs cards">
     <div class="cc" id="ccCr"><div class="blkov">Cartão bloqueado</div>
       <div class="row"><b style="letter-spacing:2px">VISION</b><span class="mut">crédito</span></div>
@@ -530,14 +557,14 @@ body.locked{overflow:hidden}
     <div style="font-size:30px;font-weight:700;margin-top:6px" id="cFat"></div>
     <div class="bar"><span id="cBar"></span></div>
     <div class="row"><span class="mut">Limite disponível</span><b id="cLim"></b></div>
-    <div class="row" style="margin-top:8px"><span class="mut">Limite total</span><span class="mut">R$ 300.000,00</span></div>
-    <button class="btn" onclick="payFatura()" id="payBtn">Pagar fatura</button><button class="btn g" onclick="openFatura()">Ver fatura detalhada</button>
+    <div class="row" style="margin-top:8px"><span class="mut">Limite total</span><span class="mut" id="cLimT">R$ 300.000,00</span></div>
+    <button class="btn" onclick="payFatura()" id="payBtn">Pagar fatura</button><button class="btn g" onclick="openFatura()">Ver fatura detalhada</button><button class="btn g" onclick="openParcelar()">Parcelar fatura</button>
   </div></div>
   <div class="hs">
     <button class="tile" onclick="cardData()"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Dados do<br>cartão</button>
-    <button class="tile" onclick="toast('Cartão virtual •••• 9021')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Cartão<br>virtual</button>
+    <button class="tile" onclick="openVirtual()"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Cartão<br>virtual</button>
     <button class="tile" onclick="toggleBlock()"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Bloquear<br><em id="blk" style="font-style:normal;color:var(--mut)">Ativo</em></span></button>
-    <button class="tile" onclick="toast('184.320 pontos disponíveis')"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Pontos<br>Loop</button>
+    <button class="tile" onclick="openPoints()"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Pontos<br>Loop</button>
     <button class="tile" onclick="toast('Carteira digital ativa')"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Carteira<br>digital</button>
   </div>
   <div class="sec"><h3>Compras recentes</h3><div class="flat" id="ccTx"></div></div>
@@ -547,7 +574,7 @@ body.locked{overflow:hidden}
 <section class="screen" id="s-invest">
   <div class="head"><h2>Investimentos</h2></div>
   <div class="big2"><small>Patrimônio investido</small><b id="invTot"></b><div class="dv" id="invRend"></div></div>
-  <div class="sec"><div class="box" id="invList"></div><button class="btn" style="margin-top:16px" onclick="openInvest()">Investir</button></div>
+  <div class="sec"><div class="mkt" id="mkt"></div><div class="box" id="invList"></div><button class="btn" style="margin-top:16px" onclick="openInvest()">Investir</button></div>
 </section>
 
 <!-- TODOS -->
@@ -562,9 +589,9 @@ body.locked{overflow:hidden}
     <button class="tile" onclick="openRecarga()">📱<span>Recarga</span></button>
     <button class="tile" onclick="openCobrar()">🔳<span>Cobrar</span></button>
     <button class="tile" onclick="openMeta()">🎯<span>Meta</span></button>
-    <button class="tile" onclick="toast('Pré-aprovado: R$ 450.000')">🤝<span>Empréstimo</span></button>
-    <button class="tile" onclick="toast('Conta Global: US$ 18.420,00')">🌎<span>Global</span></button>
-    <button class="tile" onclick="toast('Seguro ativo')">🛡️<span>Seguros</span></button>
+    <button class="tile" onclick="openLoan()">🤝<span>Empréstimo</span></button>
+    <button class="tile" onclick="openGlobal()">🌎<span>Global</span></button>
+    <button class="tile" onclick="openSeguros()">🛡️<span>Seguros</span></button>
     <button class="tile" onclick="go('prof')">👤<span>Perfil</span></button>
     <button class="tile" onclick="go('ext');setTab('res')">📊<span>Resumo</span></button>
     <button class="tile" onclick="openHelp()">💬<span>Ajuda</span></button>
@@ -582,6 +609,8 @@ body.locked{overflow:hidden}
   <div class="sec" style="padding-top:0"><div class="box">
     <button class="lb" onclick="editName()"><span class="ti">👤</span><span>Meus dados</span><em>›</em></button>
     <button class="lb" onclick="openMeta()"><span class="ti">🎯</span><span>Minha meta</span><em>›</em></button>
+    <button class="lb" onclick="openDocs()"><span class="ti">📄</span><span>Documentos</span><em>›</em></button>
+    <button class="lb" onclick="toggleLight()"><span class="ti">🌗</span><span>Modo claro</span><div class="sw" id="swLight"><i></i></div></button>
     <button class="lb" onclick="openSeg()"><span class="ti">🛡️</span><span>Segurança</span><em>›</em></button>
     <button class="lb" onclick="openHelp()"><span class="ti">💬</span><span>Ajuda</span><em>›</em></button>
     <button class="lb" onclick="openAvisos()"><span class="ti">🔔</span><span>Avisos no iPhone</span><em>›</em></button>
@@ -620,7 +649,7 @@ const FEED=[
  ['Vision Private','@visionprivate','Dica do dia: automatize um valor fixo para investir todo mês. Constância pesa mais do que tentar acertar o melhor momento.','689','203','27'],
  ['Vision Cartões','@visioncartoes','Seus pontos Loop podem virar milhas ou desconto na fatura. Veja as opções na aba Cartão.','301','58','5']
 ];
-const LIMIT=300000;
+let LIMIT=LS.get('vb_limit',300000);
 let H, filt='all', feedI=0;
 
 const IC_IN='<svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>',IC_OUT='<svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',IC_REF='<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></svg>';
@@ -722,6 +751,8 @@ async function refreshPushCard(){
 }
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(refreshPushCard).catch(()=>{})}
 </script>
+<script src="qr.js"></script>
 <script src="features.js"></script>
+<script src="deep.js"></script>
 </body>
 </html>
